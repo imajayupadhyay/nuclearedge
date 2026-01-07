@@ -43,13 +43,13 @@
 
                 <!-- Center: Logo -->
                 <div class="absolute left-1/2 transform -translate-x-1/2">
-                    <a href="/" class="block">
+                    <Link href="/" class="block">
                         <img
                             :src="logoUrl"
                             alt="Nuclear Edge"
                             class="h-12 w-auto transition-all duration-200 hover:scale-105"
                         />
-                    </a>
+                    </Link>
                 </div>
 
                 <!-- Right: Search Bar -->
@@ -138,14 +138,16 @@
                 </div>
             </transition>
         </div>
+    </header>
 
-        <!-- Mobile Navigation Menu (Modern Slide-in) -->
+    <!-- Mobile Navigation Menu (Modern Slide-in) - Teleported to body -->
+    <Teleport to="body">
         <!-- Backdrop Overlay -->
         <transition name="fade">
             <div
                 v-if="isMenuOpen"
                 @click="closeMenu"
-                class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+                class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
             ></div>
         </transition>
 
@@ -153,7 +155,7 @@
         <transition name="slide-menu">
             <div
                 v-if="isMenuOpen"
-                class="fixed top-0 left-0 bottom-0 w-80 bg-slate-950/95 backdrop-blur-xl z-[101] overflow-y-auto shadow-2xl"
+                class="fixed top-0 left-0 bottom-0 w-80 bg-slate-950/95 backdrop-blur-xl z-[9999] overflow-y-auto shadow-2xl"
             >
                 <!-- Menu Header -->
                 <div class="p-6 border-b border-white/10">
@@ -178,7 +180,7 @@
                 <nav class="p-6">
                     <ul class="space-y-2">
                         <li>
-                            <a
+                            <Link
                                 href="/"
                                 class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
                                 @click="closeMenu"
@@ -187,10 +189,10 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                 </svg>
                                 <span>Home</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                                 href="/about"
                                 class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
                                 @click="closeMenu"
@@ -199,7 +201,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                 </svg>
                                 <span>About</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <a
@@ -214,7 +216,7 @@
                             </a>
                         </li>
                         <li>
-                            <a
+                            <Link
                                 href="/blog"
                                 class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
                                 @click="closeMenu"
@@ -223,7 +225,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
                                 </svg>
                                 <span>Blog</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <a
@@ -263,11 +265,12 @@
                 </div>
             </div>
         </transition>
-    </header>
+    </Teleport>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     isTransparent: {

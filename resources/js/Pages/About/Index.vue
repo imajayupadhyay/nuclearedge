@@ -279,12 +279,12 @@
                             <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         </a>
 
-                        <a
+                        <Link
                             href="/blog"
                             class="px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-orange-400 transition-all duration-300"
                         >
                             Read Our Stories
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -296,6 +296,7 @@
 </template>
 
 <script setup>
+import { Link } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 </script>

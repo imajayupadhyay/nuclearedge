@@ -94,10 +94,11 @@
 
                 <!-- Blog Grid -->
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <article
+                    <Link
                         v-for="blog in filteredBlogs"
                         :key="blog.id"
-                        class="group cursor-pointer"
+                        :href="`/${blog.category.toLowerCase()}/${blog.slug}`"
+                        class="group cursor-pointer block"
                     >
                         <!-- Image -->
                         <div class="relative overflow-hidden rounded-3xl mb-6 aspect-[16/10]">
@@ -151,7 +152,7 @@
                                 </svg>
                             </button>
                         </div>
-                    </article>
+                    </Link>
                 </div>
 
                 <!-- Empty State -->
@@ -179,6 +180,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import { Link } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 
@@ -197,6 +199,7 @@ const blogs = ref([
     {
         id: 1,
         title: 'The Future of AI in Business: Transforming Operations and Decision-Making',
+        slug: 'the-future-of-ai-in-business',
         excerpt: 'Explore how artificial intelligence is revolutionizing business operations, from automation to predictive analytics, and what it means for the future.',
         category: 'Technology',
         date: 'Jan 5, 2026',
@@ -207,6 +210,7 @@ const blogs = ref([
     {
         id: 2,
         title: 'Digital Transformation: A Complete Guide for Traditional Industries',
+        slug: 'digital-transformation',
         excerpt: 'Learn how legacy businesses can successfully navigate digital transformation, overcome challenges, and emerge stronger in the digital age.',
         category: 'Business',
         date: 'Jan 3, 2026',
@@ -217,6 +221,7 @@ const blogs = ref([
     {
         id: 3,
         title: 'Building Scalable Web Applications: Best Practices for 2026',
+        slug: 'building-scalable-web-applications',
         excerpt: 'Discover the latest architectural patterns, tools, and methodologies for building web applications that scale effortlessly.',
         category: 'Technology',
         date: 'Dec 28, 2025',
@@ -227,6 +232,7 @@ const blogs = ref([
     {
         id: 4,
         title: 'The Rise of EdTech: How Technology is Revolutionizing Education',
+        slug: 'the-rise-of-edtech',
         excerpt: 'An in-depth look at how educational technology is transforming learning experiences and making quality education accessible to all.',
         category: 'Innovation',
         date: 'Dec 25, 2025',
@@ -237,6 +243,7 @@ const blogs = ref([
     {
         id: 5,
         title: 'Sustainable Business Practices: The New Competitive Advantage',
+        slug: 'sustainable-business-practices',
         excerpt: 'Why sustainability is no longer optional for businesses and how implementing green practices can drive growth and profitability.',
         category: 'Business',
         date: 'Dec 20, 2025',
@@ -247,6 +254,7 @@ const blogs = ref([
     {
         id: 6,
         title: 'Cloud Computing vs Edge Computing: Choosing the Right Architecture',
+        slug: 'cloud-computing-vs-edge-computing',
         excerpt: 'A comprehensive comparison of cloud and edge computing paradigms to help you make informed infrastructure decisions.',
         category: 'Technology',
         date: 'Dec 18, 2025',
@@ -257,6 +265,7 @@ const blogs = ref([
     {
         id: 7,
         title: 'Customer Experience in the Digital Age: Strategies That Work',
+        slug: 'customer-experience-in-the-digital-age',
         excerpt: 'Learn proven strategies for delivering exceptional customer experiences across digital channels and building lasting relationships.',
         category: 'Business',
         date: 'Dec 15, 2025',
@@ -267,6 +276,7 @@ const blogs = ref([
     {
         id: 8,
         title: 'Cybersecurity Essentials: Protecting Your Business in 2026',
+        slug: 'cybersecurity-essentials',
         excerpt: 'Essential cybersecurity practices every business needs to implement to protect against evolving threats and data breaches.',
         category: 'Technology',
         date: 'Dec 12, 2025',
@@ -277,6 +287,7 @@ const blogs = ref([
     {
         id: 9,
         title: 'The Power of Data Analytics: Turning Information into Insights',
+        slug: 'the-power-of-data-analytics',
         excerpt: 'How businesses are leveraging data analytics to make smarter decisions, optimize operations, and gain competitive advantages.',
         category: 'Insights',
         date: 'Dec 10, 2025',
@@ -287,6 +298,7 @@ const blogs = ref([
     {
         id: 10,
         title: 'Agile Methodology: Beyond Software Development',
+        slug: 'agile-methodology-beyond-software-development',
         excerpt: 'Discover how agile principles are being applied across various business functions to improve efficiency and adaptability.',
         category: 'Innovation',
         date: 'Dec 8, 2025',
@@ -297,6 +309,7 @@ const blogs = ref([
     {
         id: 11,
         title: 'E-commerce Trends: What\'s Shaping Online Retail in 2026',
+        slug: 'e-commerce-trends',
         excerpt: 'Stay ahead of the curve with insights into the latest e-commerce trends, from social commerce to AR shopping experiences.',
         category: 'Business',
         date: 'Dec 5, 2025',
@@ -307,6 +320,7 @@ const blogs = ref([
     {
         id: 12,
         title: 'IoT in Manufacturing: The Industrial Revolution 4.0',
+        slug: 'iot-in-manufacturing',
         excerpt: 'How the Internet of Things is transforming manufacturing processes, enabling predictive maintenance, and optimizing supply chains.',
         category: 'Insights',
         date: 'Dec 1, 2025',
