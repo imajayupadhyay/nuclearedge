@@ -10,3 +10,7 @@ Route::get('/', function () {
         'videoUrl' => 'https://cdn.coverr.co/videos/coverr-particles-background-7947/1080p.mp4',
     ]);
 });
+
+Route::get('/blog', function () {
+    return Inertia::render('Blog/Index');
+});
