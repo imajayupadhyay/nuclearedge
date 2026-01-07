@@ -19,6 +19,10 @@ Route::get('/about', function () {
     return Inertia::render('About/Index');
 });
 
+Route::get('/contact', function () {
+    return Inertia::render('Contact/Index');
+});
+
 // Blog detail page with SEO-friendly URLs: /category/blog-title
 Route::get('/{category}/{slug}', function ($category, $slug) {
     // In a real app, fetch from database

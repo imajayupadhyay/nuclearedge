@@ -312,8 +312,8 @@
                         Let's discuss how Nuclear Edge can help you achieve your goals
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
-                            href="#contact"
+                        <Link
+                            href="/contact"
                             class="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/50 hover:scale-105"
                         >
                             <span class="relative z-10 flex items-center justify-center gap-2">
@@ -323,7 +323,7 @@
                                 </svg>
                             </span>
                             <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        </a>
+                        </Link>
                         <Link
                             href="/blog"
                             class="px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-orange-400 transition-all duration-300"
