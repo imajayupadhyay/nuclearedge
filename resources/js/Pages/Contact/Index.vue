@@ -1,5 +1,11 @@
 <template>
     <div class="min-h-screen bg-white">
+        <Head>
+            <title>Contact Us - Nuclear Edge | Get in Touch with Our Team</title>
+            <meta name="description" content="Contact Nuclear Edge for business transformation and technology consulting services. Located in Bangalore, Karnataka. Email: connect.nuclearedge@gmail.com | Phone: +91 9315946467" />
+            <meta name="keywords" content="contact Nuclear Edge, business consulting contact, Bangalore consulting, get in touch, Nuclear Edge office" />
+        </Head>
+
         <!-- Header -->
         <Header :isTransparent="false" logoUrl="/images/nuclear-edge-logo.webp" />
 
@@ -307,7 +313,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 

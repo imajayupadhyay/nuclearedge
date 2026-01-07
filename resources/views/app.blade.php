@@ -4,6 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/webp" href="{{ asset('images/favicon.webp') }}">
+        <link rel="shortcut icon" type="image/webp" href="{{ asset('images/favicon.webp') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/favicon.webp') }}">
+
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])

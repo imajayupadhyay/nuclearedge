@@ -1,5 +1,12 @@
 <template>
     <div class="min-h-screen bg-white">
+        <Head>
+            <title>{{ blog.title }} - Nuclear Edge Blog</title>
+            <meta name="description" :content="blog.excerpt" />
+            <meta name="keywords" :content="`${blog.category}, ${blog.title}, Nuclear Edge, business insights, technology trends`" />
+            <meta name="author" :content="blog.author" />
+        </Head>
+
         <!-- Header -->
         <Header :isTransparent="false" logoUrl="/images/nuclear-edge-logo.webp" />
 
@@ -342,7 +349,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 

@@ -1,5 +1,11 @@
 <template>
     <div class="min-h-screen bg-white">
+        <Head>
+            <title>Blog - Nuclear Edge | Insights on Technology & Business Transformation</title>
+            <meta name="description" content="Explore Nuclear Edge's latest insights on technology, business transformation, and industry trends. Expert articles on AI, digital transformation, scalable applications, and more." />
+            <meta name="keywords" content="technology blog, business transformation articles, digital transformation insights, AI in business, Nuclear Edge blog" />
+        </Head>
+
         <!-- Header -->
         <Header :isTransparent="false" logoUrl="/images/nuclear-edge-logo.webp" />
 
@@ -180,7 +186,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 

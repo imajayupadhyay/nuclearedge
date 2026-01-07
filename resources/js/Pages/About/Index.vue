@@ -1,5 +1,11 @@
 <template>
     <div class="min-h-screen bg-white">
+        <Head>
+            <title>About Us - Nuclear Edge | 35+ Years of Business Excellence</title>
+            <meta name="description" content="Learn about Nuclear Edge's journey since 1989. A family-run business from Ambala, Haryana, now helping 100+ businesses transform through innovative consulting and technology solutions." />
+            <meta name="keywords" content="about Nuclear Edge, business consulting history, family business, Ambala Haryana, Goel family, business transformation" />
+        </Head>
+
         <!-- Header -->
         <Header :isTransparent="false" logoUrl="/images/nuclear-edge-logo.webp" />
 
@@ -296,7 +302,7 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 </script>
