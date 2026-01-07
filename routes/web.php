@@ -14,3 +14,7 @@ Route::get('/', function () {
 Route::get('/blog', function () {
     return Inertia::render('Blog/Index');
 });
+
+Route::get('/about', function () {
+    return Inertia::render('About/Index');
+});

@@ -24,7 +24,7 @@
         <div class="relative z-20 flex items-center justify-center h-full px-4">
             <div class="text-center max-w-5xl mx-auto">
                 <!-- Main Headline with Orange-Red Glow Effect & Typewriter -->
-                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-2 leading-tight min-h-[200px] md:min-h-[280px] lg:min-h-[360px]">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 leading-tight">
                     <span class="inline-block">
                         {{ typedText1 }}
                     </span>
@@ -35,15 +35,8 @@
                 </h1>
 
                 <!-- Subheadline -->
-                <p class="text-xl md:text-2xl lg:text-3xl text-white/90 mb-2 font-light tracking-wide">
+                <p class="text-xl md:text-2xl lg:text-3xl text-white/90 mb-10 font-light tracking-wide">
                     Powerful Ideas, Nuclear Results
-                </p>
-
-                <!-- Description Paragraph -->
-                <p class="text-base md:text-lg lg:text-xl text-white/80 max-w-3xl mx-auto mb-10 leading-relaxed">
-                    Harnessing the power of innovation and the precision of experience.
-                    We push boundaries, deliver cutting-edge solutions, and transform businesses
-                    with the explosive energy of fresh ideas and the reliability of decades of expertise.
                 </p>
 
                 <!-- CTA Button with Orange-Red Theme -->

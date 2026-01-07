@@ -191,7 +191,7 @@
                         </li>
                         <li>
                             <a
-                                href="#about"
+                                href="/about"
                                 class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
                                 @click="closeMenu"
                             >
