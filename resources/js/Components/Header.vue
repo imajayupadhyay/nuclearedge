@@ -204,6 +204,18 @@
                             </Link>
                         </li>
                         <li>
+                            <Link
+                                href="/success-stories"
+                                class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
+                                @click="closeMenu"
+                            >
+                                <svg class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span>Success Stories</span>
+                            </Link>
+                        </li>
+                        <li>
                             <a
                                 href="#services"
                                 class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"

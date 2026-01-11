@@ -4,13 +4,13 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
-                    Latest News &
+                    Latest Insights &
                     <span class="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                        Insights
+                        Perspectives
                     </span>
                 </h2>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    Stay updated with our latest articles, insights, and industry news
+                    Stay updated with our latest expert insights and industry perspectives
                 </p>
             </div>
 
@@ -144,7 +144,7 @@
                         href="/blog"
                         class="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full hover:shadow-lg hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105 ml-4"
                     >
-                        View all
+                        View All Insights
                     </Link>
                 </div>
 

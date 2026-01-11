@@ -15,8 +15,8 @@
         <!-- Blog Carousel Section -->
         <BlogCarousel />
 
-        <!-- Success Stories Section -->
-        <SuccessStories />
+        <!-- Tabs Section -->
+        <TabsSection />
 
         <!-- Featured Articles Section -->
         <FeaturedArticles />
@@ -33,7 +33,7 @@ import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 import Hero from './Hero.vue';
 import BlogCarousel from './BlogCarousel.vue';
-import SuccessStories from './SuccessStories.vue';
+import TabsSection from './TabsSection.vue';
 import FeaturedArticles from './FeaturedArticles.vue';
 
 defineProps({

@@ -19,16 +19,16 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-4">
-                    From Our Blog
+                    Expert Knowledge
                 </p>
                 <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
                     Featured
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                        Articles
+                        Perspectives
                     </span>
                 </h2>
                 <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                    Explore our handpicked selection of trending articles and expert insights
+                    Explore our handpicked selection of expert insights and industry perspectives
                 </p>
             </div>
 
@@ -88,7 +88,7 @@
 
                             <!-- Read More Button with Glass Effect -->
                             <div class="flex items-center gap-2 text-orange-500 font-semibold group-hover:gap-4 transition-all duration-300">
-                                <span>Read Article</span>
+                                <span>Read Insight</span>
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                 </svg>
@@ -104,7 +104,7 @@
                     href="/blog"
                     class="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/50 transition-all duration-300 hover:scale-105"
                 >
-                    <span>View All Articles</span>
+                    <span>View All Insights</span>
                     <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                     </svg>
