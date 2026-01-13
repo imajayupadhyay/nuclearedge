@@ -3,13 +3,13 @@
         <title>Dashboard - Admin Portal</title>
     </Head>
 
-    <AdminLayout :user="user">
+    <AdminLayout :user="$page.props.auth.user">
         <!-- Welcome Section -->
         <div class="mb-8">
             <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="text-3xl font-bold mb-2">Hello, {{ user.name }}!</h2>
+                        <h2 class="text-3xl font-bold mb-2">Hello, {{ $page.props.auth.user.name }}!</h2>
                         <p class="text-blue-100 text-lg">Welcome to the Nuclear Edge Admin Dashboard</p>
                     </div>
                     <div class="hidden md:block">
@@ -153,11 +153,4 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import AdminLayout from '../../Components/Admin/AdminLayout.vue';
-
-defineProps({
-    user: {
-        type: Object,
-        required: true
-    }
-});
 </script>
