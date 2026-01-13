@@ -1,9 +1,33 @@
 <template>
     <div class="min-h-screen bg-white">
         <Head>
-            <title>Contact Us - Nuclear Edge | Get in Touch with Our Team</title>
+            <title>Contact Us - Nuclear Edge | Get in Touch with Our Team in Bangalore</title>
             <meta name="description" content="Contact Nuclear Edge for business transformation and technology consulting services. Located in Bangalore, Karnataka. Email: connect.nuclearedge@gmail.com | Phone: +91 9315946467" />
-            <meta name="keywords" content="contact Nuclear Edge, business consulting contact, Bangalore consulting, get in touch, Nuclear Edge office" />
+            <meta name="keywords" content="contact Nuclear Edge, business consulting contact, Bangalore consulting, get in touch, Nuclear Edge office, consulting services inquiry, business consultation India, contact business consultant" />
+            <meta name="author" content="Nuclear Edge" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://nuclearedge.com/contact" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://nuclearedge.com/contact" />
+            <meta property="og:title" content="Contact Us - Nuclear Edge | Get in Touch with Our Team" />
+            <meta property="og:description" content="Contact Nuclear Edge for business transformation and technology consulting services. Located in Bangalore, Karnataka." />
+            <meta property="og:image" content="https://nuclearedge.com/images/contact-og-image.jpg" />
+            <meta property="og:site_name" content="Nuclear Edge" />
+
+            <!-- Twitter -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content="https://nuclearedge.com/contact" />
+            <meta name="twitter:title" content="Contact Us - Nuclear Edge | Get in Touch" />
+            <meta name="twitter:description" content="Contact Nuclear Edge for business transformation services. Email: connect.nuclearedge@gmail.com | Phone: +91 9315946467" />
+            <meta name="twitter:image" content="https://nuclearedge.com/images/contact-og-image.jpg" />
+
+            <!-- Additional SEO -->
+            <meta name="theme-color" content="#F97316" />
+            <meta name="geo.region" content="IN-KA" />
+            <meta name="geo.placename" content="Bangalore" />
+            <meta name="geo.position" content="12.9716;77.5946" />
         </Head>
 
         <!-- Header -->

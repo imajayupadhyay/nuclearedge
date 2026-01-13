@@ -1,9 +1,30 @@
 <template>
     <div class="min-h-screen bg-white">
         <Head>
-            <title>Success Stories - Nuclear Edge</title>
+            <title>Success Stories - Nuclear Edge | Real Client Case Studies & Results</title>
             <meta name="description" content="Discover how Nuclear Edge has transformed businesses across industries. Read real success stories of companies that achieved remarkable results through our consulting services." />
-            <meta name="keywords" content="success stories, case studies, business transformation, client results, Nuclear Edge portfolio" />
+            <meta name="keywords" content="success stories, case studies, business transformation, client results, Nuclear Edge portfolio, client testimonials, business consulting case studies, transformation success stories" />
+            <meta name="author" content="Nuclear Edge" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://nuclearedge.com/success-stories" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://nuclearedge.com/success-stories" />
+            <meta property="og:title" content="Success Stories - Nuclear Edge | Real Client Results" />
+            <meta property="og:description" content="Discover how Nuclear Edge has transformed businesses across industries. Read real success stories and case studies of remarkable results." />
+            <meta property="og:image" content="https://nuclearedge.com/images/success-stories-og-image.jpg" />
+            <meta property="og:site_name" content="Nuclear Edge" />
+
+            <!-- Twitter -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content="https://nuclearedge.com/success-stories" />
+            <meta name="twitter:title" content="Success Stories - Nuclear Edge | Client Case Studies" />
+            <meta name="twitter:description" content="Discover how Nuclear Edge has transformed businesses across industries. Read real success stories and results." />
+            <meta name="twitter:image" content="https://nuclearedge.com/images/success-stories-og-image.jpg" />
+
+            <!-- Additional SEO -->
+            <meta name="theme-color" content="#F97316" />
         </Head>
 
         <!-- Header - Black glass effect -->

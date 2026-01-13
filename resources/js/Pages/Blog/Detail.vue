@@ -3,8 +3,39 @@
         <Head>
             <title>{{ blog.title }} - Nuclear Edge Blog</title>
             <meta name="description" :content="blog.excerpt" />
-            <meta name="keywords" :content="`${blog.category}, ${blog.title}, Nuclear Edge, business insights, technology trends`" />
+            <meta name="keywords" :content="`${blog.category}, ${blog.title}, Nuclear Edge, business insights, technology trends, ${blog.category.toLowerCase()} articles, business transformation`" />
             <meta name="author" :content="blog.author" />
+            <meta name="robots" content="index, follow" />
+            <meta name="article:published_time" :content="blog.date" />
+            <meta name="article:author" :content="blog.author" />
+            <meta name="article:section" :content="blog.category" />
+            <link rel="canonical" :href="canonicalUrl" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="article" />
+            <meta property="og:url" :content="canonicalUrl" />
+            <meta property="og:title" :content="blog.title" />
+            <meta property="og:description" :content="blog.excerpt" />
+            <meta property="og:image" :content="blog.image" />
+            <meta property="og:site_name" content="Nuclear Edge" />
+            <meta property="article:published_time" :content="blog.date" />
+            <meta property="article:author" :content="blog.author" />
+            <meta property="article:section" :content="blog.category" />
+
+            <!-- Twitter -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" :content="canonicalUrl" />
+            <meta name="twitter:title" :content="blog.title" />
+            <meta name="twitter:description" :content="blog.excerpt" />
+            <meta name="twitter:image" :content="blog.image" />
+            <meta name="twitter:creator" :content="`@${blog.author.replace(' ', '')}`" />
+            <meta name="twitter:label1" content="Written by" />
+            <meta name="twitter:data1" :content="blog.author" />
+            <meta name="twitter:label2" content="Reading time" />
+            <meta name="twitter:data2" :content="blog.readTime" />
+
+            <!-- Additional SEO -->
+            <meta name="theme-color" content="#F97316" />
         </Head>
 
         <!-- Header -->
@@ -358,6 +389,13 @@ const props = defineProps({
         type: Object,
         required: true
     }
+});
+
+// Generate canonical URL based on blog category and slug if available
+const canonicalUrl = computed(() => {
+    const category = props.blog.category.toLowerCase();
+    const slug = props.blog.slug || props.blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return `https://nuclearedge.com/${category}/${slug}`;
 });
 
 // For demo purposes, showing 3 related articles

@@ -3,7 +3,28 @@
         <Head>
             <title>Blog - Nuclear Edge | Insights on Technology & Business Transformation</title>
             <meta name="description" content="Explore Nuclear Edge's latest insights on technology, business transformation, and industry trends. Expert articles on AI, digital transformation, scalable applications, and more." />
-            <meta name="keywords" content="technology blog, business transformation articles, digital transformation insights, AI in business, Nuclear Edge blog" />
+            <meta name="keywords" content="technology blog, business transformation articles, digital transformation insights, AI in business, Nuclear Edge blog, tech trends 2026, innovation articles, business strategy blog" />
+            <meta name="author" content="Nuclear Edge" />
+            <meta name="robots" content="index, follow" />
+            <link rel="canonical" href="https://nuclearedge.com/blog" />
+
+            <!-- Open Graph / Facebook -->
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://nuclearedge.com/blog" />
+            <meta property="og:title" content="Blog - Nuclear Edge | Technology & Business Insights" />
+            <meta property="og:description" content="Explore Nuclear Edge's latest insights on technology, business transformation, and industry trends. Expert articles on AI, digital transformation, and more." />
+            <meta property="og:image" content="https://nuclearedge.com/images/blog-og-image.jpg" />
+            <meta property="og:site_name" content="Nuclear Edge" />
+
+            <!-- Twitter -->
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:url" content="https://nuclearedge.com/blog" />
+            <meta name="twitter:title" content="Blog - Nuclear Edge | Technology & Business Insights" />
+            <meta name="twitter:description" content="Expert articles on AI, digital transformation, business strategy, and technology trends." />
+            <meta name="twitter:image" content="https://nuclearedge.com/images/blog-og-image.jpg" />
+
+            <!-- Additional SEO -->
+            <meta name="theme-color" content="#F97316" />
         </Head>
 
         <!-- Header -->
