@@ -71,4 +71,4 @@ Route::get('/{category}/{slug}', function ($category, $slug) {
     return Inertia::render('Blog/Detail', [
         'blog' => $blogs[$key]
     ]);
-});
+})->where('category', '^(?!admin).*');
