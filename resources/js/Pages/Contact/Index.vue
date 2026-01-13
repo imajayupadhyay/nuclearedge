@@ -308,16 +308,81 @@
 
         <!-- Footer -->
         <Footer />
+
+        <!-- Thank You Modal -->
+        <Transition
+            enter-active-class="transition ease-out duration-300"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition ease-in duration-200"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+        >
+            <div v-if="showThankYouModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                <Transition
+                    enter-active-class="transition ease-out duration-300"
+                    enter-from-class="opacity-0 scale-95"
+                    enter-to-class="opacity-100 scale-100"
+                    leave-active-class="transition ease-in duration-200"
+                    leave-from-class="opacity-100 scale-100"
+                    leave-to-class="opacity-0 scale-95"
+                >
+                    <div v-if="showThankYouModal" class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative">
+                        <button
+                            @click="closeModal"
+                            class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors"
+                        >
+                            <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+
+                        <div class="text-center">
+                            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+                                <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                            </div>
+
+                            <h3 class="text-3xl font-bold text-slate-900 mb-3">
+                                Thank You!
+                            </h3>
+                            <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+                                Your message has been received successfully. We'll get back to you shortly.
+                            </p>
+
+                            <div class="flex flex-col gap-3">
+                                <button
+                                    @click="closeModal"
+                                    class="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-2xl hover:shadow-lg hover:shadow-orange-500/50 transition-all duration-300"
+                                >
+                                    Close
+                                </button>
+                                <Link
+                                    href="/"
+                                    class="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-2xl hover:bg-slate-50 transition-all duration-300"
+                                >
+                                    Back to Home
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </Transition>
+            </div>
+        </Transition>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Link, Head } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, Head, useForm, usePage } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 
-const form = ref({
+const page = usePage();
+const showThankYouModal = ref(false);
+
+const form = useForm({
     name: '',
     email: '',
     services: '',
@@ -325,21 +390,20 @@ const form = ref({
     message: ''
 });
 
+const successMessage = computed(() => page.props.flash?.success);
+
 const submitForm = () => {
-    // In a real application, this would send the form data to the backend
-    console.log('Form submitted:', form.value);
+    form.post('/contact', {
+        preserveScroll: true,
+        onSuccess: () => {
+            form.reset();
+            showThankYouModal.value = true;
+        },
+    });
+};
 
-    // Show success message (in real app, handle this properly)
-    alert('Thank you for contacting us! We will get back to you soon.');
-
-    // Reset form
-    form.value = {
-        name: '',
-        email: '',
-        services: '',
-        phone: '',
-        message: ''
-    };
+const closeModal = () => {
+    showThankYouModal.value = false;
 };
 </script>
 

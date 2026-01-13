@@ -46,27 +46,35 @@
                             <div class="flex items-center gap-3">
                                 <div class="flex-1 relative group">
                                     <input
-                                        v-model="email"
+                                        v-model="form.email"
                                         type="email"
                                         placeholder="Enter your email"
-                                        class="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-slate-500 outline-none transition-all duration-300 focus:bg-white/10 focus:border-orange-500/50 backdrop-blur-sm"
+                                        :class="[
+                                            'w-full px-6 py-4 bg-white/5 border rounded-2xl text-white placeholder:text-slate-500 outline-none transition-all duration-300 focus:bg-white/10 backdrop-blur-sm',
+                                            form.errors.email ? 'border-red-500 focus:border-red-500' : 'border-white/10 focus:border-orange-500/50'
+                                        ]"
                                     />
                                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500/20 to-red-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-xl"></div>
                                 </div>
                                 <button
                                     @click="subscribeNewsletter"
-                                    class="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/50 hover:scale-105"
+                                    :disabled="form.processing"
+                                    class="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/50 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <span class="relative z-10 flex items-center gap-2">
-                                        Subscribe
-                                        <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <span v-if="!form.processing">Subscribe</span>
+                                        <span v-else>Subscribing...</span>
+                                        <svg v-if="!form.processing" class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                         </svg>
                                     </span>
                                     <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </button>
                             </div>
-                            <p v-if="subscribeMessage" class="mt-3 text-sm text-green-400">{{ subscribeMessage }}</p>
+                            <p v-if="subscribeMessage" :class="[
+                                'mt-3 text-sm',
+                                form.errors.email ? 'text-red-400' : 'text-green-400'
+                            ]">{{ subscribeMessage }}</p>
                         </div>
                     </div>
 
@@ -201,10 +209,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useForm, usePage } from '@inertiajs/vue3';
 
-const email = ref('');
+const page = usePage();
 const subscribeMessage = ref('');
+
+const form = useForm({
+    email: '',
+});
 
 const quickLinks = ref([
     { name: 'Home', href: '#home' },
@@ -215,15 +228,29 @@ const quickLinks = ref([
     { name: 'Contact', href: '#contact' },
 ]);
 
+const newsletterSuccess = computed(() => page.props.flash?.newsletter_success);
 
 const subscribeNewsletter = () => {
-    if (email.value) {
-        // Handle newsletter subscription
-        subscribeMessage.value = 'Thank you for subscribing!';
-        email.value = '';
-        setTimeout(() => {
-            subscribeMessage.value = '';
-        }, 3000);
+    if (form.email) {
+        form.post('/newsletter/subscribe', {
+            preserveScroll: true,
+            onSuccess: () => {
+                subscribeMessage.value = 'Thank you for subscribing!';
+                form.reset();
+                setTimeout(() => {
+                    subscribeMessage.value = '';
+                }, 5000);
+            },
+            onError: () => {
+                if (form.errors.email) {
+                    subscribeMessage.value = form.errors.email;
+                    setTimeout(() => {
+                        subscribeMessage.value = '';
+                        form.clearErrors();
+                    }, 5000);
+                }
+            },
+        });
     }
 };
 </script>

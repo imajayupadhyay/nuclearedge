@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\NewsletterController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,6 +22,10 @@ Route::get('/about', function () {
 Route::get('/contact', function () {
     return Inertia::render('Contact/Index');
 });
+
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 Route::get('/success-stories', function () {
     return Inertia::render('SuccessStories/Index');

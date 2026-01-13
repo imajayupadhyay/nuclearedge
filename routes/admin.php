@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,5 +19,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
         Route::resource('users', UserController::class);
+        Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
+        Route::post('/contacts/{contact}/mark-read', [ContactController::class, 'markAsRead'])->name('contacts.mark-read');
+        Route::post('/contacts/{contact}/mark-unread', [ContactController::class, 'markAsUnread'])->name('contacts.mark-unread');
+
+        Route::resource('newsletters', NewsletterController::class)->only(['index', 'destroy']);
     });
 });

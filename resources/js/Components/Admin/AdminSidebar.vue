@@ -55,6 +55,36 @@
                     </svg>
                     <span class="font-medium">Users</span>
                 </a>
+
+                <a
+                    href="/admin/contacts"
+                    :class="[
+                        'flex items-center px-3 py-2.5 rounded-lg transition-all duration-200',
+                        page.url.startsWith('/admin/contacts')
+                            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                    ]"
+                >
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    <span class="font-medium">Contact Messages</span>
+                </a>
+
+                <a
+                    href="/admin/newsletters"
+                    :class="[
+                        'flex items-center px-3 py-2.5 rounded-lg transition-all duration-200',
+                        page.url.startsWith('/admin/newsletters')
+                            ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                    ]"
+                >
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"/>
+                    </svg>
+                    <span class="font-medium">Newsletter</span>
+                </a>
             </div>
 
             <!-- Website Link -->
