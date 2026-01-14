@@ -66,16 +66,20 @@
                                 ]"
                             >
                                 <input
+                                    ref="desktopSearchInput"
                                     type="text"
                                     v-model="searchQuery"
-                                    placeholder="Search..."
+                                    placeholder="Search blogs..."
                                     :class="[
                                         'bg-transparent outline-none w-48 transition-all duration-200 focus:w-64 placeholder:text-sm text-white placeholder:text-white/70'
                                     ]"
-                                    @focus="isSearchFocused = true"
-                                    @blur="isSearchFocused = false"
+                                    @focus="handleSearchFocus"
+                                    @blur="handleSearchBlur"
+                                    @keyup.enter="performSearch"
+                                    @input="debouncedSearch"
                                 />
                                 <button
+                                    @click="performSearch"
                                     :class="[
                                         'ml-2 transition-colors duration-200',
                                         'text-white hover:text-orange-400'
@@ -87,6 +91,79 @@
                                     </svg>
                                 </button>
                             </div>
+
+                            <!-- Search Suggestions Dropdown -->
+                            <transition name="dropdown">
+                                <div
+                                    v-if="isSearchFocused && (searchResults.length > 0 || searchQuery.length > 0)"
+                                    class="absolute right-0 mt-2 w-96 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden z-50"
+                                >
+                                    <!-- Loading State -->
+                                    <div v-if="isSearching" class="p-4 text-center">
+                                        <div class="inline-flex items-center gap-2 text-white/70">
+                                            <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            <span class="text-sm">Searching...</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Search Results -->
+                                    <div v-else-if="searchResults.length > 0" class="max-h-96 overflow-y-auto custom-scrollbar">
+                                        <div class="p-2">
+                                            <p class="px-3 py-2 text-xs font-semibold text-white/50 uppercase tracking-wider">Search Results</p>
+                                            <Link
+                                                v-for="result in searchResults"
+                                                :key="result.id"
+                                                :href="`/${result.categorySlug}/${result.slug}`"
+                                                @click="closeSearch"
+                                                class="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group"
+                                            >
+                                                <img
+                                                    :src="result.image"
+                                                    :alt="result.title"
+                                                    class="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                                                />
+                                                <div class="flex-1 min-w-0">
+                                                    <h4 class="text-white font-semibold text-sm line-clamp-1 group-hover:text-orange-400 transition-colors">
+                                                        {{ result.title }}
+                                                    </h4>
+                                                    <p class="text-white/60 text-xs line-clamp-2 mt-1">{{ result.excerpt }}</p>
+                                                    <div class="flex items-center gap-2 mt-2">
+                                                        <span class="text-xs text-orange-400">{{ result.category }}</span>
+                                                        <span class="text-white/40">•</span>
+                                                        <span class="text-xs text-white/40">{{ result.readTime }}</span>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                        </div>
+                                    </div>
+
+                                    <!-- No Results -->
+                                    <div v-else-if="searchQuery.length > 0" class="p-6 text-center">
+                                        <svg class="w-12 h-12 mx-auto text-white/20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <p class="text-white/70 text-sm">No results found</p>
+                                        <p class="text-white/50 text-xs mt-1">Try different keywords</p>
+                                    </div>
+
+                                    <!-- View All Results Footer -->
+                                    <div v-if="searchResults.length > 0" class="border-t border-white/10 p-3">
+                                        <Link
+                                            :href="`/blog?search=${searchQuery}`"
+                                            @click="closeSearch"
+                                            class="flex items-center justify-center gap-2 text-sm text-orange-400 hover:text-orange-300 transition-colors font-semibold"
+                                        >
+                                            <span>View all results</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                            </svg>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </transition>
                         </div>
 
                         <!-- Mobile Search Icon -->
@@ -118,14 +195,18 @@
                         ]"
                     >
                         <input
+                            ref="mobileSearchInput"
                             type="text"
                             v-model="searchQuery"
-                            placeholder="Search..."
+                            placeholder="Search blogs..."
                             :class="[
                                 'bg-transparent outline-none w-full placeholder:text-sm text-white placeholder:text-white/70'
                             ]"
+                            @keyup.enter="performSearch"
+                            @input="debouncedSearch"
                         />
                         <button
+                            @click="performSearch"
                             :class="[
                                 'ml-2 text-white'
                             ]"
@@ -134,6 +215,44 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </button>
+                    </div>
+
+                    <!-- Mobile Search Results -->
+                    <div v-if="searchResults.length > 0 || (searchQuery.length > 0 && !isSearching)" class="mt-2 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden">
+                        <!-- Loading State -->
+                        <div v-if="isSearching" class="p-4 text-center">
+                            <div class="inline-flex items-center gap-2 text-white/70">
+                                <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span class="text-sm">Searching...</span>
+                            </div>
+                        </div>
+
+                        <!-- Results -->
+                        <div v-else-if="searchResults.length > 0" class="max-h-80 overflow-y-auto custom-scrollbar">
+                            <div class="p-2">
+                                <Link
+                                    v-for="result in searchResults"
+                                    :key="result.id"
+                                    :href="`/${result.categorySlug}/${result.slug}`"
+                                    @click="closeSearch"
+                                    class="flex items-start gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors"
+                                >
+                                    <img :src="result.image" :alt="result.title" class="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-white font-semibold text-sm line-clamp-1">{{ result.title }}</h4>
+                                        <span class="text-xs text-orange-400">{{ result.category }}</span>
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+
+                        <!-- No Results -->
+                        <div v-else class="p-4 text-center">
+                            <p class="text-white/70 text-sm">No results found</p>
+                        </div>
                     </div>
                 </div>
             </transition>
@@ -270,7 +389,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+import axios from 'axios';
 
 const props = defineProps({
     isTransparent: {
@@ -287,6 +407,11 @@ const isMenuOpen = ref(false);
 const isSearchOpen = ref(false);
 const searchQuery = ref('');
 const isSearchFocused = ref(false);
+const isSearching = ref(false);
+const searchResults = ref([]);
+const desktopSearchInput = ref(null);
+const mobileSearchInput = ref(null);
+let searchTimeout = null;
 
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
@@ -303,6 +428,69 @@ const toggleSearch = () => {
 const closeMenu = () => {
     isMenuOpen.value = false;
 };
+
+const handleSearchFocus = () => {
+    isSearchFocused.value = true;
+    if (searchQuery.value.length > 0) {
+        performSearchAPI();
+    }
+};
+
+const handleSearchBlur = () => {
+    // Delay closing to allow clicking on results
+    setTimeout(() => {
+        isSearchFocused.value = false;
+    }, 200);
+};
+
+const closeSearch = () => {
+    isSearchFocused.value = false;
+    isSearchOpen.value = false;
+    searchResults.value = [];
+};
+
+const debouncedSearch = () => {
+    clearTimeout(searchTimeout);
+
+    if (searchQuery.value.length === 0) {
+        searchResults.value = [];
+        isSearching.value = false;
+        return;
+    }
+
+    isSearching.value = true;
+
+    searchTimeout = setTimeout(() => {
+        performSearchAPI();
+    }, 300);
+};
+
+const performSearchAPI = async () => {
+    if (searchQuery.value.length === 0) {
+        searchResults.value = [];
+        isSearching.value = false;
+        return;
+    }
+
+    try {
+        const response = await axios.get('/api/search-blogs', {
+            params: { q: searchQuery.value, limit: 5 }
+        });
+        searchResults.value = response.data.results || [];
+    } catch (error) {
+        console.error('Search error:', error);
+        searchResults.value = [];
+    } finally {
+        isSearching.value = false;
+    }
+};
+
+const performSearch = () => {
+    if (searchQuery.value.trim()) {
+        closeSearch();
+        router.visit(`/blog?search=${encodeURIComponent(searchQuery.value.trim())}`);
+    }
+};
 </script>
 
 <style scoped>
@@ -318,6 +506,22 @@ const closeMenu = () => {
 }
 
 .slide-down-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Dropdown animation for search results */
+.dropdown-enter-active,
+.dropdown-leave-active {
+    transition: all 0.2s ease;
+}
+
+.dropdown-enter-from {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.dropdown-leave-to {
     opacity: 0;
     transform: translateY(-10px);
 }
@@ -345,5 +549,39 @@ const closeMenu = () => {
 
 .slide-menu-leave-to {
     transform: translateX(-100%);
+}
+
+/* Custom scrollbar for search results */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(249, 115, 22, 0.5);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(249, 115, 22, 0.7);
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 </style>

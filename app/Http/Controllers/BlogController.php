@@ -146,4 +146,41 @@ class BlogController extends Controller
             'relatedArticles' => $relatedArticles,
         ]);
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q', '');
+        $limit = $request->input('limit', 5);
+
+        if (empty($query)) {
+            return response()->json(['results' => []]);
+        }
+
+        $blogs = Blog::with(['user', 'categories'])
+            ->published()
+            ->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                    ->orWhere('excerpt', 'like', "%{$query}%")
+                    ->orWhere('content', 'like', "%{$query}%");
+            })
+            ->latest('published_at')
+            ->limit($limit)
+            ->get()
+            ->map(function ($blog) {
+                return [
+                    'id' => $blog->id,
+                    'title' => $blog->title,
+                    'excerpt' => $blog->excerpt,
+                    'category' => $blog->categories->first()->name ?? 'Uncategorized',
+                    'date' => $blog->published_at->format('M d, Y'),
+                    'author' => $blog->user->name,
+                    'readTime' => $blog->read_time . ' min read',
+                    'image' => $blog->featured_image ? asset('storage/' . $blog->featured_image) : 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80',
+                    'slug' => $blog->slug,
+                    'categorySlug' => $blog->categories->first()->slug ?? 'uncategorized',
+                ];
+            });
+
+        return response()->json(['results' => $blogs]);
+    }
 }

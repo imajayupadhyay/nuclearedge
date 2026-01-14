@@ -23,6 +23,8 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
+Route::get('/api/search-blogs', [BlogController::class, 'search'])->name('api.search-blogs');
+
 Route::get('/success-stories', function () {
     return Inertia::render('SuccessStories/Index');
 });
