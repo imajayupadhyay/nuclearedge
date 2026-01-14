@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\NewsletterController;
@@ -21,6 +22,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
+        Route::resource('blogs', BlogController::class);
         Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
         Route::post('/contacts/{contact}/mark-read', [ContactController::class, 'markAsRead'])->name('contacts.mark-read');
         Route::post('/contacts/{contact}/mark-unread', [ContactController::class, 'markAsUnread'])->name('contacts.mark-unread');

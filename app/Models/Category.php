@@ -36,6 +36,11 @@ class Category extends Model
         return $this->children()->with('allChildren');
     }
 
+    public function blogs()
+    {
+        return $this->belongsToMany(Blog::class, 'blog_category');
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', true);
