@@ -78,13 +78,22 @@ class BlogController extends Controller
         ]);
     }
 
-    public function show($categorySlug, $slug)
+    public function show(Request $request, $categorySlug, $slug)
     {
-        // Find blog by slug
-        $blog = Blog::with(['user', 'categories'])
-            ->published()
-            ->where('slug', $slug)
-            ->firstOrFail();
+        // Check if preview mode is requested
+        $isPreview = $request->has('preview') && $request->preview === 'true';
+
+        // Build query
+        $query = Blog::with(['user', 'categories'])->where('slug', $slug);
+
+        // If preview mode and user is authenticated admin, allow viewing draft
+        if ($isPreview && auth()->check()) {
+            // Allow viewing any blog (draft or published) for authenticated users
+            $blog = $query->firstOrFail();
+        } else {
+            // Only show published blogs for public access
+            $blog = $query->published()->firstOrFail();
+        }
 
         // Verify category matches
         $hasCategory = $blog->categories->contains('slug', $categorySlug);
@@ -92,8 +101,10 @@ class BlogController extends Controller
             abort(404);
         }
 
-        // Increment view count
-        $blog->increment('view_count');
+        // Only increment view count for non-preview (published) views
+        if (!$isPreview) {
+            $blog->increment('view_count');
+        }
 
         // Get related articles (same category, exclude current)
         $relatedArticles = Blog::with(['user', 'categories'])
@@ -128,7 +139,8 @@ class BlogController extends Controller
             'content' => $blog->content,
             'category' => $blog->categories->first()->name ?? 'Uncategorized',
             'categorySlug' => $blog->categories->first()->slug ?? 'uncategorized',
-            'date' => $blog->published_at->format('M d, Y'),
+            'date' => $blog->published_at ? $blog->published_at->format('M d, Y') : 'Draft',
+            'status' => $blog->status,
             'author' => $blog->user->name,
             'authorBio' => $blog->user->bio ?? 'Content creator at Nuclear Edge',
             'authorAvatar' => $blog->user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($blog->user->name) . '&background=F97316&color=fff',
@@ -144,6 +156,7 @@ class BlogController extends Controller
         return Inertia::render('Blog/Detail', [
             'blog' => $blogData,
             'relatedArticles' => $relatedArticles,
+            'isPreview' => $isPreview && $blog->status === 'draft',
         ]);
     }
 
