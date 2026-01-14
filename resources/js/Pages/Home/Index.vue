@@ -38,13 +38,13 @@
         <Hero :videoUrl="videoUrl" />
 
         <!-- Blog Carousel Section -->
-        <BlogCarousel />
+        <BlogCarousel :blogs="carouselBlogs" />
 
         <!-- Tabs Section -->
         <TabsSection />
 
         <!-- Featured Articles Section -->
-        <FeaturedArticles />
+        <FeaturedArticles :blogs="featuredArticles" />
 
         <!-- Footer -->
         <Footer />
@@ -65,6 +65,14 @@ defineProps({
     videoUrl: {
         type: String,
         default: '/videos/hero-background.mp4'
+    },
+    carouselBlogs: {
+        type: Array,
+        default: () => []
+    },
+    featuredArticles: {
+        type: Array,
+        default: () => []
     }
 });
 

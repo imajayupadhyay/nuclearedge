@@ -26,7 +26,7 @@
                         <Link
                             v-for="post in blogPosts"
                             :key="post.id"
-                            :href="`/${post.category.toLowerCase()}/${post.slug}`"
+                            :href="`/${post.categorySlug}/${post.slug}`"
                             :class="[
                                 'flex-shrink-0 rounded-3xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl',
                                 cardWidthClass
@@ -170,73 +170,33 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
+const props = defineProps({
+    blogs: {
+        type: Array,
+        default: () => []
+    }
+});
+
 const currentIndex = ref(0);
 const carouselContainer = ref(null);
 const windowWidth = ref(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
-// Real blog posts data from our blog
-const blogPosts = ref([
-    {
-        id: 1,
-        title: 'The Future of AI in Business: Transforming Operations and Decision-Making',
-        slug: 'the-future-of-ai-in-business',
-        excerpt: 'Explore how artificial intelligence is revolutionizing business operations',
-        category: 'Technology',
-        date: 'Jan 5, 2026',
-        author: 'Rajesh Goel',
-        readTime: '8 min read',
-        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
-        gradient: 'bg-gradient-to-br from-orange-500 via-red-500 to-pink-600'
-    },
-    {
-        id: 2,
-        title: 'Digital Transformation: A Complete Guide for Traditional Industries',
-        slug: 'digital-transformation',
-        excerpt: 'Learn how legacy businesses can successfully navigate digital transformation',
-        category: 'Business',
-        date: 'Jan 3, 2026',
-        author: 'Priya Sharma',
-        readTime: '12 min read',
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80',
-        gradient: 'bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700'
-    },
-    {
-        id: 3,
-        title: 'Building Scalable Web Applications: Best Practices for 2026',
-        slug: 'building-scalable-web-applications',
-        excerpt: 'Discover the latest architectural patterns, tools, and methodologies',
-        category: 'Technology',
-        date: 'Dec 28, 2025',
-        author: 'Amit Kumar',
-        readTime: '10 min read',
-        image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
-        gradient: 'bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-700'
-    },
-    {
-        id: 4,
-        title: 'The Rise of EdTech: How Technology is Revolutionizing Education',
-        slug: 'the-rise-of-edtech',
-        excerpt: 'An in-depth look at how educational technology is transforming learning',
-        category: 'Innovation',
-        date: 'Dec 25, 2025',
-        author: 'Dr. Meera Singh',
-        readTime: '9 min read',
-        image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80',
-        gradient: 'bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700'
-    },
-    {
-        id: 5,
-        title: 'Sustainable Business Practices: The New Competitive Advantage',
-        slug: 'sustainable-business-practices',
-        excerpt: 'Why sustainability is no longer optional for businesses',
-        category: 'Business',
-        date: 'Dec 20, 2025',
-        author: 'Vikram Reddy',
-        readTime: '7 min read',
-        image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80',
-        gradient: 'bg-gradient-to-br from-amber-500 via-orange-600 to-red-700'
-    }
-]);
+// Gradient palette for variety
+const gradients = [
+    'bg-gradient-to-br from-orange-500 via-red-500 to-pink-600',
+    'bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700',
+    'bg-gradient-to-br from-violet-600 via-purple-600 to-fuchsia-700',
+    'bg-gradient-to-br from-emerald-500 via-teal-600 to-cyan-700',
+    'bg-gradient-to-br from-amber-500 via-orange-600 to-red-700'
+];
+
+// Add gradient to each blog post
+const blogPosts = computed(() => {
+    return props.blogs.map((post, index) => ({
+        ...post,
+        gradient: gradients[index % gradients.length]
+    }));
+});
 
 // Responsive cards visibility
 const visibleCards = computed(() => {

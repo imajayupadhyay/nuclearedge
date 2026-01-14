@@ -37,7 +37,7 @@
                 <Link
                     v-for="blog in latestBlogs"
                     :key="blog.id"
-                    :href="`/${blog.category.toLowerCase()}/${blog.slug}`"
+                    :href="`/${blog.categorySlug}/${blog.slug}`"
                     class="group cursor-pointer"
                 >
                     <!-- Glass Card Container -->
@@ -115,78 +115,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-// Latest 6 blog posts (same data from Blog/Index.vue)
-const latestBlogs = ref([
-    {
-        id: 1,
-        title: 'The Future of AI in Business: Transforming Operations and Decision-Making',
-        slug: 'the-future-of-ai-in-business',
-        excerpt: 'Explore how artificial intelligence is revolutionizing business operations, from automation to predictive analytics, and what it means for the future.',
-        category: 'Technology',
-        date: 'Jan 5, 2026',
-        author: 'Rajesh Goel',
-        readTime: '8 min read',
-        image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80'
-    },
-    {
-        id: 2,
-        title: 'Digital Transformation: A Complete Guide for Traditional Industries',
-        slug: 'digital-transformation',
-        excerpt: 'Learn how legacy businesses can successfully navigate digital transformation, overcome challenges, and emerge stronger in the digital age.',
-        category: 'Business',
-        date: 'Jan 3, 2026',
-        author: 'Priya Sharma',
-        readTime: '12 min read',
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80'
-    },
-    {
-        id: 3,
-        title: 'Building Scalable Web Applications: Best Practices for 2026',
-        slug: 'building-scalable-web-applications',
-        excerpt: 'Discover the latest architectural patterns, tools, and methodologies for building web applications that scale effortlessly.',
-        category: 'Technology',
-        date: 'Dec 28, 2025',
-        author: 'Amit Kumar',
-        readTime: '10 min read',
-        image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80'
-    },
-    {
-        id: 4,
-        title: 'The Rise of EdTech: How Technology is Revolutionizing Education',
-        slug: 'the-rise-of-edtech',
-        excerpt: 'An in-depth look at how educational technology is transforming learning experiences and making quality education accessible to all.',
-        category: 'Innovation',
-        date: 'Dec 25, 2025',
-        author: 'Dr. Meera Singh',
-        readTime: '9 min read',
-        image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80'
-    },
-    {
-        id: 5,
-        title: 'Sustainable Business Practices: The New Competitive Advantage',
-        slug: 'sustainable-business-practices',
-        excerpt: 'Why sustainability is no longer optional for businesses and how implementing green practices can drive growth and profitability.',
-        category: 'Business',
-        date: 'Dec 20, 2025',
-        author: 'Vikram Reddy',
-        readTime: '7 min read',
-        image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=800&q=80'
-    },
-    {
-        id: 6,
-        title: 'Cloud Computing vs Edge Computing: Choosing the Right Architecture',
-        slug: 'cloud-computing-vs-edge-computing',
-        excerpt: 'A comprehensive comparison of cloud and edge computing paradigms to help you make informed infrastructure decisions.',
-        category: 'Technology',
-        date: 'Dec 18, 2025',
-        author: 'Sanjay Patel',
-        readTime: '11 min read',
-        image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80'
+const props = defineProps({
+    blogs: {
+        type: Array,
+        default: () => []
     }
-]);
+});
+
+const latestBlogs = props.blogs;
 </script>
 
 <style scoped>

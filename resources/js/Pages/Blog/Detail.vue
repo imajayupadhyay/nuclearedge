@@ -281,10 +281,11 @@
                     </div>
 
                     <div class="grid md:grid-cols-3 gap-8">
-                        <article
+                        <Link
                             v-for="related in relatedArticles"
                             :key="related.id"
-                            class="group cursor-pointer"
+                            :href="`/${related.categorySlug}/${related.slug}`"
+                            class="group cursor-pointer block"
                         >
                             <!-- Image -->
                             <div class="relative overflow-hidden rounded-3xl mb-6 aspect-[16/10]">
@@ -319,7 +320,7 @@
                                     <span>{{ related.readTime }}</span>
                                 </div>
                             </div>
-                        </article>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -388,47 +389,16 @@ const props = defineProps({
     blog: {
         type: Object,
         required: true
+    },
+    relatedArticles: {
+        type: Array,
+        default: () => []
     }
 });
 
-// Generate canonical URL based on blog category and slug if available
+// Generate canonical URL based on blog category and slug
 const canonicalUrl = computed(() => {
-    const category = props.blog.category.toLowerCase();
-    const slug = props.blog.slug || props.blog.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    return `https://nuclearedge.com/${category}/${slug}`;
-});
-
-// For demo purposes, showing 3 related articles
-const relatedArticles = computed(() => {
-    // In a real app, this would fetch related articles based on category or tags
-    return [
-        {
-            id: 2,
-            title: 'Digital Transformation: A Complete Guide',
-            excerpt: 'Learn how legacy businesses can successfully navigate digital transformation.',
-            category: 'Business',
-            date: 'Jan 3, 2026',
-            readTime: '12 min read',
-            image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80'
-        },
-        {
-            id: 3,
-            title: 'Building Scalable Web Applications',
-            excerpt: 'Discover the latest architectural patterns and tools for 2026.',
-            category: 'Technology',
-            date: 'Dec 28, 2025',
-            readTime: '10 min read',
-            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80'
-        },
-        {
-            id: 4,
-            title: 'The Rise of EdTech',
-            excerpt: 'How technology is revolutionizing education and learning experiences.',
-            category: 'Innovation',
-            date: 'Dec 25, 2025',
-            readTime: '9 min read',
-            image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80'
-        }
-    ];
+    const categorySlug = props.blog.categorySlug || props.blog.category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return `https://nuclearedge.com/${categorySlug}/${props.blog.slug}`;
 });
 </script>
