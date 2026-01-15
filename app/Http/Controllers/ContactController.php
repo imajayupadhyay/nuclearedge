@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactFormMail;
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
@@ -17,7 +19,10 @@ class ContactController extends Controller
             'message' => 'required|string',
         ]);
 
-        Contact::create($validated);
+        $contact = Contact::create($validated);
+
+        // Send notification email to admin
+        Mail::to('connect@nuclearedge.com')->send(new ContactFormMail($contact));
 
         return back()->with('success', 'Thank you for contacting us! We will get back to you soon.');
     }
