@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\MenuItem;
+use App\Models\FooterSetting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -46,6 +47,7 @@ class HandleInertiaRequests extends Middleware
                 'error' => $request->session()->get('error'),
             ],
             'menu' => fn () => MenuItem::getMenuTree(),
+            'footer' => fn () => FooterSetting::getFooterData(),
         ];
     }
 }

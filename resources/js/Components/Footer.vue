@@ -26,18 +26,18 @@
                         <div class="mb-8">
                             <!-- Logo -->
                             <img
-                                src="/images/nuclear-edge-logo.webp"
+                                :src="footerData.logo_url || '/images/nuclear-edge-logo.webp'"
                                 alt="Nuclear Edge"
                                 class="h-16 mb-6"
                             />
                             <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                                From Problems to Progress:
+                                {{ footerData.heading_line1 || 'From Problems to Progress:' }}
                                 <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mt-2">
-                                    Your Partner in Growth
+                                    {{ footerData.heading_line2 || 'Your Partner in Growth' }}
                                 </span>
                             </h3>
                             <p class="text-slate-400 text-lg leading-relaxed">
-                                Join our newsletter to stay updated with the latest insights, innovations, and success stories.
+                                {{ footerData.description || 'Join our newsletter to stay updated with the latest insights, innovations, and success stories.' }}
                             </p>
                         </div>
 
@@ -89,7 +89,7 @@
                             <ul class="space-y-4">
                                 <li v-for="link in quickLinks" :key="link.name">
                                     <a
-                                        :href="link.href"
+                                        :href="link.url"
                                         class="text-slate-400 hover:text-orange-500 transition-colors duration-300 flex items-center gap-2 group"
                                     >
                                         <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +108,7 @@
                                 Contact Us
                             </h4>
                             <ul class="space-y-6">
-                                <li class="flex items-start gap-4 group">
+                                <li v-if="footerData.address" class="flex items-start gap-4 group">
                                     <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/20 transition-colors duration-300">
                                         <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -116,21 +116,30 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <p class="text-slate-400 leading-relaxed">
-                                            1195 Salarpuriya IndiraNagar<br/>
-                                            Bangalore 560038
-                                        </p>
+                                        <p class="text-slate-400 leading-relaxed whitespace-pre-line">{{ footerData.address }}</p>
                                     </div>
                                 </li>
-                                <li class="flex items-start gap-4 group">
+                                <li v-if="footerData.phone" class="flex items-start gap-4 group">
                                     <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/20 transition-colors duration-300">
                                         <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                                         </svg>
                                     </div>
                                     <div>
-                                        <a href="tel:+919315946467" class="text-slate-400 hover:text-orange-500 transition-colors duration-300">
-                                            +91 9315946467
+                                        <a :href="'tel:' + footerData.phone.replace(/\s/g, '')" class="text-slate-400 hover:text-orange-500 transition-colors duration-300">
+                                            {{ footerData.phone }}
+                                        </a>
+                                    </div>
+                                </li>
+                                <li v-if="footerData.email" class="flex items-start gap-4 group">
+                                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0 group-hover:bg-orange-500/20 transition-colors duration-300">
+                                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <a :href="'mailto:' + footerData.email" class="text-slate-400 hover:text-orange-500 transition-colors duration-300">
+                                            {{ footerData.email }}
                                         </a>
                                     </div>
                                 </li>
@@ -141,7 +150,10 @@
                                 <div class="flex items-center gap-3">
                                     <!-- LinkedIn -->
                                     <a
-                                        href="#"
+                                        v-if="getSocialUrl('linkedin')"
+                                        :href="getSocialUrl('linkedin')"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         aria-label="LinkedIn"
                                         class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 hover:text-white transition-all duration-300 hover:scale-110"
                                     >
@@ -151,7 +163,10 @@
                                     </a>
                                     <!-- Twitter/X -->
                                     <a
-                                        href="#"
+                                        v-if="getSocialUrl('twitter')"
+                                        :href="getSocialUrl('twitter')"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         aria-label="Twitter"
                                         class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 hover:text-white transition-all duration-300 hover:scale-110"
                                     >
@@ -161,7 +176,10 @@
                                     </a>
                                     <!-- Facebook -->
                                     <a
-                                        href="#"
+                                        v-if="getSocialUrl('facebook')"
+                                        :href="getSocialUrl('facebook')"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         aria-label="Facebook"
                                         class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 hover:text-white transition-all duration-300 hover:scale-110"
                                     >
@@ -171,7 +189,10 @@
                                     </a>
                                     <!-- Instagram -->
                                     <a
-                                        href="#"
+                                        v-if="getSocialUrl('instagram')"
+                                        :href="getSocialUrl('instagram')"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         aria-label="Instagram"
                                         class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-400 hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 hover:text-white transition-all duration-300 hover:scale-110"
                                     >
@@ -193,14 +214,14 @@
                 <!-- Bottom Section: Copyright -->
                 <div class="text-center">
                     <p class="text-slate-500 text-sm">
-                        Copyright © 2026
+                        Copyright © {{ currentYear }}
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 font-semibold">
-                            NuclearEdge
+                            {{ footerData.copyright_text || 'NuclearEdge' }}
                         </span>
                         . All Rights Reserved.
                     </p>
                     <p class="text-slate-600 text-xs mt-2">
-                        Built with nuclear precision and innovative excellence
+                        {{ footerData.copyright_tagline || 'Built with nuclear precision and innovative excellence' }}
                     </p>
                 </div>
             </div>
@@ -219,16 +240,33 @@ const form = useForm({
     email: '',
 });
 
-const quickLinks = ref([
-    { name: 'Home', href: '#home' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Success Stories', href: '#stories' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Contact', href: '#contact' },
-]);
+// Get footer data from shared props
+const footerData = computed(() => page.props.footer || {});
 
-const newsletterSuccess = computed(() => page.props.flash?.newsletter_success);
+// Get quick links - use dynamic data or fallback to defaults
+const quickLinks = computed(() => {
+    if (footerData.value.quick_links && footerData.value.quick_links.length > 0) {
+        return footerData.value.quick_links;
+    }
+    // Fallback default links
+    return [
+        { name: 'Home', url: '/' },
+        { name: 'About Us', url: '/about' },
+        { name: 'Blog', url: '/blog' },
+        { name: 'Success Stories', url: '/success-stories' },
+        { name: 'Contact', url: '/contact' },
+    ];
+});
+
+// Get social URL by platform
+const getSocialUrl = (platform) => {
+    if (!footerData.value.social_links) return null;
+    const social = footerData.value.social_links.find(s => s.platform === platform);
+    return social?.url || null;
+};
+
+// Current year for copyright
+const currentYear = new Date().getFullYear();
 
 const subscribeNewsletter = () => {
     if (form.email) {
