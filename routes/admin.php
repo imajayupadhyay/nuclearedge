@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,5 +29,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/contacts/{contact}/mark-unread', [ContactController::class, 'markAsUnread'])->name('contacts.mark-unread');
 
         Route::resource('newsletters', NewsletterController::class)->only(['index', 'destroy']);
+
+        // Menu Management
+        Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
+        Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
+        Route::put('/menus/{menuItem}', [MenuController::class, 'update'])->name('menus.update');
+        Route::delete('/menus/{menuItem}', [MenuController::class, 'destroy'])->name('menus.destroy');
+        Route::post('/menus/reorder', [MenuController::class, 'reorder'])->name('menus.reorder');
     });
 });

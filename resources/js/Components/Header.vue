@@ -298,7 +298,74 @@
                 <!-- Navigation Links -->
                 <nav class="p-6">
                     <ul class="space-y-2">
-                        <li>
+                        <li v-for="item in menuItems" :key="item.id">
+                            <!-- Parent item with dropdown -->
+                            <template v-if="item.active_children && item.active_children.length > 0">
+                                <button
+                                    @click="toggleDropdown(item.id)"
+                                    class="w-full group flex items-center justify-between gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
+                                >
+                                    <div class="flex items-center gap-4">
+                                        <svg v-if="item.icon" class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon"/>
+                                        </svg>
+                                        <svg v-else class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                        </svg>
+                                        <span>{{ item.title }}</span>
+                                    </div>
+                                    <svg :class="['w-4 h-4 transition-transform', openDropdowns.includes(item.id) ? 'rotate-180' : '']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown children -->
+                                <transition name="dropdown-menu">
+                                    <ul v-if="openDropdowns.includes(item.id)" class="ml-6 mt-2 space-y-1">
+                                        <li v-for="child in item.active_children" :key="child.id">
+                                            <component
+                                                :is="isExternalLink(child.url) ? 'a' : Link"
+                                                :href="child.url"
+                                                :target="child.open_in_new_tab ? '_blank' : null"
+                                                class="flex items-center gap-3 px-4 py-3 text-white/80 hover:text-white hover:bg-white/5 rounded-lg transition-all"
+                                                @click="closeMenu"
+                                            >
+                                                <span class="w-1.5 h-1.5 rounded-full bg-orange-500"></span>
+                                                {{ child.title }}
+                                                <svg v-if="child.open_in_new_tab" class="w-3 h-3 ml-auto text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                                </svg>
+                                            </component>
+                                        </li>
+                                    </ul>
+                                </transition>
+                            </template>
+
+                            <!-- Simple link (no children) -->
+                            <template v-else>
+                                <component
+                                    :is="isExternalLink(item.url) ? 'a' : Link"
+                                    :href="item.url"
+                                    :target="item.open_in_new_tab ? '_blank' : null"
+                                    class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
+                                    @click="closeMenu"
+                                >
+                                    <svg v-if="item.icon" class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="item.icon"/>
+                                    </svg>
+                                    <svg v-else class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                    </svg>
+                                    <span>{{ item.title }}</span>
+                                    <svg v-if="item.open_in_new_tab" class="w-4 h-4 ml-auto text-white/50 group-hover:text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                    </svg>
+                                </component>
+                            </template>
+                        </li>
+
+                        <!-- Fallback if no menu items -->
+                        <li v-if="menuItems.length === 0">
                             <Link
                                 href="/"
                                 class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
@@ -308,54 +375,6 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                 </svg>
                                 <span>Home</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/about"
-                                class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
-                                @click="closeMenu"
-                            >
-                                <svg class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                <span>About</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/success-stories"
-                                class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
-                                @click="closeMenu"
-                            >
-                                <svg class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                                <span>Success Stories</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/blog"
-                                class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
-                                @click="closeMenu"
-                            >
-                                <svg class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-                                </svg>
-                                <span>Blog</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/contact"
-                                class="group flex items-center gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
-                                @click="closeMenu"
-                            >
-                                <svg class="w-5 h-5 text-orange-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                </svg>
-                                <span>Contact</span>
                             </Link>
                         </li>
                     </ul>
@@ -388,9 +407,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
+
+const page = usePage();
 
 const props = defineProps({
     isTransparent: {
@@ -412,6 +433,23 @@ const searchResults = ref([]);
 const desktopSearchInput = ref(null);
 const mobileSearchInput = ref(null);
 let searchTimeout = null;
+
+// Dynamic menu
+const menuItems = computed(() => page.props.menu || []);
+const openDropdowns = ref([]);
+
+const toggleDropdown = (id) => {
+    const index = openDropdowns.value.indexOf(id);
+    if (index > -1) {
+        openDropdowns.value.splice(index, 1);
+    } else {
+        openDropdowns.value.push(id);
+    }
+};
+
+const isExternalLink = (url) => {
+    return url && (url.startsWith('http://') || url.startsWith('https://'));
+};
 
 const toggleMenu = () => {
     isMenuOpen.value = !isMenuOpen.value;
@@ -549,6 +587,25 @@ const performSearch = () => {
 
 .slide-menu-leave-to {
     transform: translateX(-100%);
+}
+
+/* Dropdown menu animation */
+.dropdown-menu-enter-active,
+.dropdown-menu-leave-active {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.dropdown-menu-enter-from,
+.dropdown-menu-leave-to {
+    opacity: 0;
+    max-height: 0;
+}
+
+.dropdown-menu-enter-to,
+.dropdown-menu-leave-from {
+    opacity: 1;
+    max-height: 500px;
 }
 
 /* Custom scrollbar for search results */
