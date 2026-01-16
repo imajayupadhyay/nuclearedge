@@ -47,16 +47,16 @@
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-4xl mx-auto text-center">
                     <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-4">
-                        Insights & Innovation
+                        {{ heroLabel }}
                     </p>
                     <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-                        Nuclear Edge
+                        {{ heroHeadlineLine1 }}
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mt-2">
-                            Blog
+                            {{ heroHeadlineLine2 }}
                         </span>
                     </h1>
                     <p class="text-xl text-slate-300 leading-relaxed">
-                        Explore our latest insights on technology, business transformation, and industry trends
+                        {{ heroParagraph }}
                     </p>
                 </div>
             </div>
@@ -278,7 +278,14 @@ const props = defineProps({
     blogs: Object,
     categories: Array,
     filters: Object,
+    pageData: Object,
 });
+
+// Computed properties for hero section with fallback defaults
+const heroLabel = computed(() => props.pageData?.hero?.label || 'Insights & Innovation');
+const heroHeadlineLine1 = computed(() => props.pageData?.hero?.headline_line1 || 'Nuclear Edge');
+const heroHeadlineLine2 = computed(() => props.pageData?.hero?.headline_line2 || 'Blog');
+const heroParagraph = computed(() => props.pageData?.hero?.paragraph || 'Explore our latest insights on technology, business transformation, and industry trends');
 
 const searchQuery = ref(props.filters.search || '');
 const selectedCategory = ref(props.filters.category || 'All');

@@ -21,6 +21,126 @@
             </a>
         </div>
 
+        <!-- ==================== HERO SECTION SETTINGS ==================== -->
+        <div class="mb-8">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Blog Page Hero Section</h2>
+                    <p class="text-sm text-slate-500">Customize the hero banner on the /blog page</p>
+                </div>
+            </div>
+
+            <form @submit.prevent="saveHeroSettings">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <!-- Preview Card -->
+                    <div class="mb-6 p-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-xl">
+                        <div class="text-center">
+                            <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-2">
+                                {{ heroForm.hero_label || 'Insights & Innovation' }}
+                            </p>
+                            <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">
+                                {{ heroForm.hero_headline_line1 || 'Nuclear Edge' }}
+                            </h3>
+                            <h3 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                                {{ heroForm.hero_headline_line2 || 'Blog' }}
+                            </h3>
+                            <p class="text-slate-300 mt-3">{{ heroForm.hero_paragraph || 'Explore our latest insights on technology, business transformation, and industry trends' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- Label -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Label (Uppercase)</label>
+                            <input
+                                v-model="heroForm.hero_label"
+                                type="text"
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Insights & Innovation"
+                            />
+                            <p class="text-xs text-slate-500 mt-1">Default: "Insights & Innovation"</p>
+                        </div>
+
+                        <!-- Headline Line 1 -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Headline Line 1</label>
+                            <input
+                                v-model="heroForm.hero_headline_line1"
+                                type="text"
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Nuclear Edge"
+                            />
+                            <p class="text-xs text-slate-500 mt-1">Default: "Nuclear Edge"</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mt-4">
+                        <!-- Headline Line 2 (Gradient) -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Headline Line 2 (Gradient Text)</label>
+                            <input
+                                v-model="heroForm.hero_headline_line2"
+                                type="text"
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Blog"
+                            />
+                            <p class="text-xs text-slate-500 mt-1">Default: "Blog"</p>
+                        </div>
+
+                        <!-- Paragraph -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Description Paragraph</label>
+                            <input
+                                v-model="heroForm.hero_paragraph"
+                                type="text"
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                                placeholder="Explore our latest insights..."
+                            />
+                            <p class="text-xs text-slate-500 mt-1">Default: "Explore our latest insights on technology, business transformation, and industry trends"</p>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="mt-6 flex justify-end">
+                        <button
+                            type="submit"
+                            :disabled="heroForm.processing"
+                            class="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-50"
+                        >
+                            <span v-if="!heroForm.processing">Save Hero Settings</span>
+                            <span v-else class="flex items-center gap-2">
+                                <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                Saving...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- ==================== BLOG POSTS MANAGEMENT ==================== -->
+        <div class="mb-4">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Blog Posts</h2>
+                    <p class="text-sm text-slate-500">Manage all your blog posts</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Success Message -->
         <div v-if="$page.props.flash.success" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
             <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -275,6 +395,7 @@ const props = defineProps({
     blogs: Object,
     categories: Array,
     filters: Object,
+    heroSettings: Object,
 });
 
 const searchForm = reactive({
@@ -282,6 +403,30 @@ const searchForm = reactive({
     status: props.filters.status || '',
     category: props.filters.category || '',
 });
+
+// Hero settings form
+const heroForm = reactive({
+    hero_label: props.heroSettings?.hero_label || '',
+    hero_headline_line1: props.heroSettings?.hero_headline_line1 || '',
+    hero_headline_line2: props.heroSettings?.hero_headline_line2 || '',
+    hero_paragraph: props.heroSettings?.hero_paragraph || '',
+    processing: false,
+});
+
+const saveHeroSettings = () => {
+    heroForm.processing = true;
+    router.post('/admin/blogs/hero-settings', {
+        hero_label: heroForm.hero_label,
+        hero_headline_line1: heroForm.hero_headline_line1,
+        hero_headline_line2: heroForm.hero_headline_line2,
+        hero_paragraph: heroForm.hero_paragraph,
+    }, {
+        preserveScroll: true,
+        onFinish: () => {
+            heroForm.processing = false;
+        },
+    });
+};
 
 const showDeleteModal = ref(false);
 const blogToDelete = ref(null);

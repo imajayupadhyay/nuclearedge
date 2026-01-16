@@ -26,6 +26,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('blogs', BlogController::class);
+        Route::post('/blogs/hero-settings', [BlogController::class, 'updateHeroSettings'])->name('blogs.hero-settings');
         Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
         Route::post('/contacts/{contact}/mark-read', [ContactController::class, 'markAsRead'])->name('contacts.mark-read');
         Route::post('/contacts/{contact}/mark-unread', [ContactController::class, 'markAsUnread'])->name('contacts.mark-unread');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\BlogPageSetting;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -35,11 +36,53 @@ class BlogController extends Controller
 
         $categories = Category::active()->ordered()->get();
 
+        // Get hero settings
+        $heroSettings = BlogPageSetting::all()->pluck('value', 'key')->toArray();
+
         return Inertia::render('Admin/Blogs/Index', [
             'blogs' => $blogs,
             'categories' => $categories,
             'filters' => $request->only(['search', 'status', 'category']),
+            'heroSettings' => $heroSettings,
         ]);
+    }
+
+    /**
+     * Update blog page hero settings
+     */
+    public function updateHeroSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'hero_label' => 'nullable|string|max:100',
+            'hero_headline_line1' => 'nullable|string|max:255',
+            'hero_headline_line2' => 'nullable|string|max:255',
+            'hero_paragraph' => 'nullable|string|max:500',
+        ]);
+
+        $fields = [
+            'hero_label',
+            'hero_headline_line1',
+            'hero_headline_line2',
+            'hero_paragraph',
+        ];
+
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $validated)) {
+                BlogPageSetting::updateOrCreate(
+                    ['key' => $field],
+                    [
+                        'value' => $validated[$field],
+                        'type' => 'text',
+                        'group' => 'hero',
+                        'label' => ucwords(str_replace('_', ' ', $field)),
+                    ]
+                );
+            }
+        }
+
+        BlogPageSetting::clearCache();
+
+        return back()->with('success', 'Blog page hero settings updated successfully.');
     }
 
     public function create()

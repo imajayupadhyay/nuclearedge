@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\BlogPageSetting;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -68,6 +69,9 @@ class BlogController extends Controller
                 ];
             });
 
+        // Get blog page settings
+        $pageData = BlogPageSetting::getBlogPageData();
+
         return Inertia::render('Blog/Index', [
             'blogs' => $blogs,
             'categories' => $categories,
@@ -75,6 +79,7 @@ class BlogController extends Controller
                 'search' => $request->search,
                 'category' => $request->category,
             ],
+            'pageData' => $pageData,
         ]);
     }
 
