@@ -35,10 +35,10 @@
         <Header :isTransparent="isHeaderTransparent" logoUrl="/images/nuclear-edge-logo.webp" />
 
         <!-- Hero Section -->
-        <Hero :videoUrl="videoUrl" />
+        <Hero :heroData="homepageData?.hero" />
 
         <!-- Blog Carousel Section -->
-        <BlogCarousel :blogs="carouselBlogs" />
+        <BlogCarousel :blogs="carouselBlogs" :sectionData="homepageData?.blog_carousel" />
 
         <!-- Tabs Section -->
         <TabsSection />
@@ -62,9 +62,9 @@ import TabsSection from './TabsSection.vue';
 import FeaturedArticles from './FeaturedArticles.vue';
 
 defineProps({
-    videoUrl: {
-        type: String,
-        default: '/videos/hero-background.mp4'
+    homepageData: {
+        type: Object,
+        default: () => ({})
     },
     carouselBlogs: {
         type: Array,

@@ -12,6 +12,7 @@
                 class="w-full h-full object-cover"
                 @loadeddata="onVideoLoaded"
                 @error="onVideoError"
+                :key="videoUrl"
             >
                 <source :src="videoUrl" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -36,24 +37,24 @@
 
                 <!-- Subheadline -->
                 <p class="text-xl md:text-2xl lg:text-3xl text-white/90 mb-10 font-light tracking-wide">
-                    Powerful Ideas, Nuclear Results
+                    {{ subheadline }}
                 </p>
 
                 <!-- CTA Button with Orange-Red Theme -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                     <Link
-                        href="/about"
+                        :href="primaryButtonLink"
                         class="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-[0_0_30px_rgba(239,68,68,0.7)] hover:scale-105"
                     >
-                        <span class="relative z-10">Discover Our Story</span>
+                        <span class="relative z-10">{{ primaryButtonText }}</span>
                         <div class="absolute inset-0 bg-gradient-to-r from-red-600 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </Link>
 
                     <a
-                        href="#services"
+                        :href="secondaryButtonLink"
                         class="px-8 py-4 border-2 border-slate-300 text-white font-semibold rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-orange-500 transition-all duration-300"
                     >
-                        Explore Services
+                        {{ secondaryButtonText }}
                     </a>
                 </div>
 
@@ -100,22 +101,45 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
-    videoUrl: {
-        type: String,
-        default: '/videos/hero-background.mp4'
+    heroData: {
+        type: Object,
+        default: () => ({})
     }
 });
+
+// Default values (static content fallback)
+const defaults = {
+    videoUrl: '/videos/hero-background.mp4',
+    headlineLine1: 'Innovation at the',
+    headlineLine2: 'Nuclear Edge',
+    subheadline: 'Powerful Ideas, Nuclear Results',
+    primaryButtonText: 'Discover Our Story',
+    primaryButtonLink: '/about',
+    secondaryButtonText: 'Explore Services',
+    secondaryButtonLink: '#services'
+};
+
+// Computed properties with fallback to defaults
+const videoUrl = computed(() => props.heroData?.video_url || defaults.videoUrl);
+const headlineLine1 = computed(() => props.heroData?.headline_line1 || defaults.headlineLine1);
+const headlineLine2 = computed(() => props.heroData?.headline_line2 || defaults.headlineLine2);
+const subheadline = computed(() => props.heroData?.subheadline || defaults.subheadline);
+const primaryButtonText = computed(() => props.heroData?.primary_button_text || defaults.primaryButtonText);
+const primaryButtonLink = computed(() => props.heroData?.primary_button_link || defaults.primaryButtonLink);
+const secondaryButtonText = computed(() => props.heroData?.secondary_button_text || defaults.secondaryButtonText);
+const secondaryButtonLink = computed(() => props.heroData?.secondary_button_link || defaults.secondaryButtonLink);
 
 const videoRef = ref(null);
 const typedText1 = ref('');
 const typedText2 = ref('');
 
-const fullText1 = 'Innovation at the';
-const fullText2 = 'Nuclear Edge';
+// Use computed headline values
+const fullText1 = computed(() => headlineLine1.value);
+const fullText2 = computed(() => headlineLine2.value);
 
 const onVideoLoaded = () => {
     console.log('Video loaded successfully');
@@ -152,10 +176,10 @@ onMounted(() => {
         });
     }
 
-    // Start typewriter effect (faster)
-    typeWriter(fullText1, typedText1, 50, 300).then(() => {
+    // Start typewriter effect (faster) - use .value for computed properties
+    typeWriter(fullText1.value, typedText1, 50, 300).then(() => {
         // After first line is done, type the second line
-        typeWriter(fullText2, typedText2, 60, 100);
+        typeWriter(fullText2.value, typedText2, 60, 100);
     });
 });
 </script>

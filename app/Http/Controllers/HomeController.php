@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\HomepageSetting;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        // Get homepage settings from database
+        $homepageData = HomepageSetting::getHomepageData();
         // Get featured blogs for carousel (5 latest featured or published blogs)
         $carouselBlogs = Blog::with(['user', 'categories'])
             ->published()
@@ -62,7 +65,7 @@ class HomeController extends Controller
             });
 
         return Inertia::render('Home/Index', [
-            'videoUrl' => asset('traf_homepage_loop_final-1080p.mp4'),
+            'homepageData' => $homepageData,
             'carouselBlogs' => $carouselBlogs,
             'featuredArticles' => $featuredArticles,
         ]);

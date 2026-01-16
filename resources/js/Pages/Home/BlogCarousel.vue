@@ -4,13 +4,13 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
-                    Latest Insights &
+                    {{ headingLine1 }}
                     <span class="bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
-                        Perspectives
+                        {{ headingLine2 }}
                     </span>
                 </h2>
                 <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    Stay updated with our latest expert insights and industry perspectives
+                    {{ paragraph }}
                 </p>
             </div>
 
@@ -174,8 +174,24 @@ const props = defineProps({
     blogs: {
         type: Array,
         default: () => []
+    },
+    sectionData: {
+        type: Object,
+        default: () => ({})
     }
 });
+
+// Default values (static content fallback)
+const defaults = {
+    headingLine1: 'Latest Insights &',
+    headingLine2: 'Perspectives',
+    paragraph: 'Stay updated with our latest expert insights and industry perspectives'
+};
+
+// Computed properties with fallback to defaults
+const headingLine1 = computed(() => props.sectionData?.heading_line1 || defaults.headingLine1);
+const headingLine2 = computed(() => props.sectionData?.heading_line2 || defaults.headingLine2);
+const paragraph = computed(() => props.sectionData?.paragraph || defaults.paragraph);
 
 const currentIndex = ref(0);
 const carouselContainer = ref(null);
