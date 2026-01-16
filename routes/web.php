@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Models\AboutPageSetting;
 use App\Models\ContactPageSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,7 +14,9 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/blog', [BlogController::class, 'index']);
 
 Route::get('/about', function () {
-    return Inertia::render('About/Index');
+    return Inertia::render('About/Index', [
+        'pageData' => AboutPageSetting::getAboutPageData(),
+    ]);
 });
 
 Route::get('/contact', function () {

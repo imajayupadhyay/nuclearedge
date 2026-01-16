@@ -62,16 +62,16 @@
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-4xl mx-auto text-center">
                     <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-4">
-                        Who We Are
+                        {{ heroLabel }}
                     </p>
                     <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-                        About
+                        {{ heroHeadlineLine1 }}
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mt-2">
-                            Nuclear Edge
+                            {{ heroHeadlineLine2 }}
                         </span>
                     </h1>
                     <p class="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto">
-                        Powerful, efficient, and always pushing the limits of innovation
+                        {{ heroParagraph }}
                     </p>
                 </div>
             </div>
@@ -92,13 +92,13 @@
                 <div class="max-w-5xl mx-auto">
                     <div class="text-center mb-16">
                         <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
-                            At Nuclear Edge, we embody the spirit of
+                            {{ introHeadingLine1 }}
                             <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                                nuclear energy
+                                {{ introHeadingLine2 }}
                             </span>
                         </h2>
                         <p class="text-xl text-slate-600 leading-relaxed">
-                            Powerful, efficient, and always pushing the limits of innovation. The "edge" in our name stands for our commitment to staying ahead, constantly evolving, and delivering cutting-edge solutions to our clients.
+                            {{ introParagraph }}
                         </p>
                     </div>
 
@@ -106,21 +106,21 @@
                     <div class="grid md:grid-cols-3 gap-8 mt-16">
                         <div class="text-center p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-orange-500/20 transition-all duration-300 group">
                             <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mb-2">
-                                1989
+                                {{ introStat1Value }}
                             </div>
-                            <p class="text-slate-600 font-medium">Founded in Ambala</p>
+                            <p class="text-slate-600 font-medium">{{ introStat1Label }}</p>
                         </div>
                         <div class="text-center p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-orange-500/20 transition-all duration-300 group">
                             <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mb-2">
-                                35+
+                                {{ introStat2Value }}
                             </div>
-                            <p class="text-slate-600 font-medium">Years of Excellence</p>
+                            <p class="text-slate-600 font-medium">{{ introStat2Label }}</p>
                         </div>
                         <div class="text-center p-8 bg-slate-50 rounded-3xl border border-slate-100 hover:border-orange-500/20 transition-all duration-300 group">
                             <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mb-2">
-                                100+
+                                {{ introStat3Value }}
                             </div>
-                            <p class="text-slate-600 font-medium">Businesses Transformed</p>
+                            <p class="text-slate-600 font-medium">{{ introStat3Label }}</p>
                         </div>
                     </div>
                 </div>
@@ -137,10 +137,10 @@
                             <div class="aspect-square rounded-3xl bg-gradient-to-br from-orange-500 to-red-500 p-1">
                                 <div class="w-full h-full rounded-3xl bg-slate-900 flex items-center justify-center p-12">
                                     <div class="text-center">
-                                        <div class="text-8xl font-bold text-white mb-4">1989</div>
+                                        <div class="text-8xl font-bold text-white mb-4">{{ journeyStartYear }}</div>
                                         <div class="text-3xl text-orange-500 font-bold mb-2">↓</div>
-                                        <div class="text-6xl font-bold text-white">2026</div>
-                                        <p class="text-slate-400 mt-6 text-lg">Our Journey</p>
+                                        <div class="text-6xl font-bold text-white">{{ journeyEndYear }}</div>
+                                        <p class="text-slate-400 mt-6 text-lg">{{ journeyLabel }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -150,22 +150,18 @@
                         <div>
                             <div class="mb-6">
                                 <span class="px-4 py-2 bg-orange-500/10 text-orange-600 font-semibold rounded-full text-sm">
-                                    Our Journey
+                                    {{ journeyLabel }}
                                 </span>
                             </div>
                             <h3 class="text-4xl font-bold text-slate-900 mb-6">
-                                A Legacy Built on
+                                {{ journeyHeadingLine1 }}
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                                    Trust & Innovation
+                                    {{ journeyHeadingLine2 }}
                                 </span>
                             </h3>
                             <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
-                                <p>
-                                    Our journey began in <strong class="text-slate-900">1989 in Ambala, Haryana</strong>, as one of the oldest family-run businesses in the region. The Goel family's next generation took the reins in 2016, formalizing the venture into what is now known as <strong class="text-slate-900">Nuclear Edge</strong>.
-                                </p>
-                                <p>
-                                    With decades of experience under our belt, we've been consulting and providing tailored solutions to businesses across industries, helping them thrive in a rapidly changing world.
-                                </p>
+                                <p v-html="journeyParagraph1"></p>
+                                <p v-html="journeyParagraph2"></p>
                             </div>
                         </div>
                     </div>
@@ -182,22 +178,18 @@
                         <div class="order-2 lg:order-1">
                             <div class="mb-6">
                                 <span class="px-4 py-2 bg-orange-500/10 text-orange-600 font-semibold rounded-full text-sm">
-                                    Our Excellence
+                                    {{ excellenceLabel }}
                                 </span>
                             </div>
                             <h3 class="text-4xl font-bold text-slate-900 mb-6">
-                                Grounded in Culture,
+                                {{ excellenceHeadingLine1 }}
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                                    Driven by Results
+                                    {{ excellenceHeadingLine2 }}
                                 </span>
                             </h3>
                             <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
-                                <p>
-                                    We pride ourselves on our grounded, sustainable, and <strong class="text-slate-900">'desi Punjabi'</strong> approach. Our clients know us for delivering results with a personal touch, rooted in the culture and values we hold dear.
-                                </p>
-                                <p>
-                                    Over the years, we've helped hundreds of businesses reach new heights, working on the <strong class="text-slate-900">smallest details – the atoms</strong> – to deliver the big picture and the final product.
-                                </p>
+                                <p v-html="excellenceParagraph1"></p>
+                                <p v-html="excellenceParagraph2"></p>
                             </div>
 
                             <!-- Feature List -->
@@ -209,8 +201,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-slate-900 mb-1">Personal Touch</h4>
-                                        <p class="text-slate-600">Every project gets our undivided attention and care</p>
+                                        <h4 class="font-semibold text-slate-900 mb-1">{{ excellenceFeature1Title }}</h4>
+                                        <p class="text-slate-600">{{ excellenceFeature1Desc }}</p>
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-4">
@@ -220,8 +212,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-slate-900 mb-1">Sustainable Approach</h4>
-                                        <p class="text-slate-600">Building solutions that last and grow with you</p>
+                                        <h4 class="font-semibold text-slate-900 mb-1">{{ excellenceFeature2Title }}</h4>
+                                        <p class="text-slate-600">{{ excellenceFeature2Desc }}</p>
                                     </div>
                                 </div>
                                 <div class="flex items-start gap-4">
@@ -231,8 +223,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <h4 class="font-semibold text-slate-900 mb-1">Attention to Detail</h4>
-                                        <p class="text-slate-600">From atoms to the big picture</p>
+                                        <h4 class="font-semibold text-slate-900 mb-1">{{ excellenceFeature3Title }}</h4>
+                                        <p class="text-slate-600">{{ excellenceFeature3Desc }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -251,9 +243,9 @@
                                 <!-- Floating Badge -->
                                 <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-2xl p-6">
                                     <div class="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                                        100+
+                                        {{ excellenceBadgeValue }}
                                     </div>
-                                    <p class="text-slate-600 font-medium">Happy Clients</p>
+                                    <p class="text-slate-600 font-medium">{{ excellenceBadgeLabel }}</p>
                                 </div>
                             </div>
                         </div>
@@ -280,27 +272,27 @@
                 <div class="max-w-4xl mx-auto text-center">
                     <div class="mb-8">
                         <span class="px-4 py-2 bg-orange-500/20 text-orange-400 font-semibold rounded-full text-sm">
-                            Our Vision
+                            {{ visionLabel }}
                         </span>
                     </div>
                     <h3 class="text-4xl md:text-5xl font-bold text-white mb-8">
-                        Passionate About Your
+                        {{ visionHeadingLine1 }}
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mt-2">
-                            Success
+                            {{ visionHeadingLine2 }}
                         </span>
                     </h3>
                     <p class="text-xl text-slate-300 leading-relaxed mb-12">
-                        And while we're serious about helping your business grow, we're also a fun bunch to work with! If you're passionate about business and want a partner that's just as excited as you are about success, let's connect.
+                        {{ visionParagraph }}
                     </p>
 
                     <!-- CTA -->
                     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                         <Link
-                            href="/contact"
+                            :href="visionPrimaryButtonLink"
                             class="group relative px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/50 hover:scale-105"
                         >
                             <span class="relative z-10 flex items-center gap-2">
-                                Join the Nuclear Edge Family
+                                {{ visionPrimaryButtonText }}
                                 <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                 </svg>
@@ -309,10 +301,10 @@
                         </Link>
 
                         <Link
-                            href="/blog"
+                            :href="visionSecondaryButtonLink"
                             class="px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-orange-400 transition-all duration-300"
                         >
-                            Read Our Stories
+                            {{ visionSecondaryButtonText }}
                         </Link>
                     </div>
                 </div>
@@ -326,8 +318,67 @@
 
 <script setup>
 import { Link, Head } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
+
+const props = defineProps({
+    pageData: {
+        type: Object,
+        default: () => ({})
+    }
+});
+
+// Hero Section
+const heroLabel = computed(() => props.pageData?.hero?.label || 'Who We Are');
+const heroHeadlineLine1 = computed(() => props.pageData?.hero?.headline_line1 || 'About');
+const heroHeadlineLine2 = computed(() => props.pageData?.hero?.headline_line2 || 'Nuclear Edge');
+const heroParagraph = computed(() => props.pageData?.hero?.paragraph || 'Powerful, efficient, and always pushing the limits of innovation');
+
+// Intro Section
+const introHeadingLine1 = computed(() => props.pageData?.intro?.heading_line1 || 'At Nuclear Edge, we embody the spirit of');
+const introHeadingLine2 = computed(() => props.pageData?.intro?.heading_line2 || 'nuclear energy');
+const introParagraph = computed(() => props.pageData?.intro?.paragraph || 'Powerful, efficient, and always pushing the limits of innovation. The "edge" in our name stands for our commitment to staying ahead, constantly evolving, and delivering cutting-edge solutions to our clients.');
+const introStat1Value = computed(() => props.pageData?.intro?.stat1_value || '1989');
+const introStat1Label = computed(() => props.pageData?.intro?.stat1_label || 'Founded in Ambala');
+const introStat2Value = computed(() => props.pageData?.intro?.stat2_value || '35+');
+const introStat2Label = computed(() => props.pageData?.intro?.stat2_label || 'Years of Excellence');
+const introStat3Value = computed(() => props.pageData?.intro?.stat3_value || '100+');
+const introStat3Label = computed(() => props.pageData?.intro?.stat3_label || 'Businesses Transformed');
+
+// Journey Section
+const journeyLabel = computed(() => props.pageData?.journey?.label || 'Our Journey');
+const journeyHeadingLine1 = computed(() => props.pageData?.journey?.heading_line1 || 'A Legacy Built on');
+const journeyHeadingLine2 = computed(() => props.pageData?.journey?.heading_line2 || 'Trust & Innovation');
+const journeyStartYear = computed(() => props.pageData?.journey?.start_year || '1989');
+const journeyEndYear = computed(() => props.pageData?.journey?.end_year || '2026');
+const journeyParagraph1 = computed(() => props.pageData?.journey?.paragraph1 || 'Our journey began in <strong class="text-slate-900">1989 in Ambala, Haryana</strong>, as one of the oldest family-run businesses in the region. The Goel family\'s next generation took the reins in 2016, formalizing the venture into what is now known as <strong class="text-slate-900">Nuclear Edge</strong>.');
+const journeyParagraph2 = computed(() => props.pageData?.journey?.paragraph2 || 'With decades of experience under our belt, we\'ve been consulting and providing tailored solutions to businesses across industries, helping them thrive in a rapidly changing world.');
+
+// Excellence Section
+const excellenceLabel = computed(() => props.pageData?.excellence?.label || 'Our Excellence');
+const excellenceHeadingLine1 = computed(() => props.pageData?.excellence?.heading_line1 || 'Grounded in Culture,');
+const excellenceHeadingLine2 = computed(() => props.pageData?.excellence?.heading_line2 || 'Driven by Results');
+const excellenceParagraph1 = computed(() => props.pageData?.excellence?.paragraph1 || 'We pride ourselves on our grounded, sustainable, and <strong class="text-slate-900">\'desi Punjabi\'</strong> approach. Our clients know us for delivering results with a personal touch, rooted in the culture and values we hold dear.');
+const excellenceParagraph2 = computed(() => props.pageData?.excellence?.paragraph2 || 'Over the years, we\'ve helped hundreds of businesses reach new heights, working on the <strong class="text-slate-900">smallest details – the atoms</strong> – to deliver the big picture and the final product.');
+const excellenceFeature1Title = computed(() => props.pageData?.excellence?.feature1_title || 'Personal Touch');
+const excellenceFeature1Desc = computed(() => props.pageData?.excellence?.feature1_desc || 'Every project gets our undivided attention and care');
+const excellenceFeature2Title = computed(() => props.pageData?.excellence?.feature2_title || 'Sustainable Approach');
+const excellenceFeature2Desc = computed(() => props.pageData?.excellence?.feature2_desc || 'Building solutions that last and grow with you');
+const excellenceFeature3Title = computed(() => props.pageData?.excellence?.feature3_title || 'Attention to Detail');
+const excellenceFeature3Desc = computed(() => props.pageData?.excellence?.feature3_desc || 'From atoms to the big picture');
+const excellenceBadgeValue = computed(() => props.pageData?.excellence?.badge_value || '100+');
+const excellenceBadgeLabel = computed(() => props.pageData?.excellence?.badge_label || 'Happy Clients');
+
+// Vision Section
+const visionLabel = computed(() => props.pageData?.vision?.label || 'Our Vision');
+const visionHeadingLine1 = computed(() => props.pageData?.vision?.heading_line1 || 'Passionate About Your');
+const visionHeadingLine2 = computed(() => props.pageData?.vision?.heading_line2 || 'Success');
+const visionParagraph = computed(() => props.pageData?.vision?.paragraph || 'And while we\'re serious about helping your business grow, we\'re also a fun bunch to work with! If you\'re passionate about business and want a partner that\'s just as excited as you are about success, let\'s connect.');
+const visionPrimaryButtonText = computed(() => props.pageData?.vision?.primary_button_text || 'Join the Nuclear Edge Family');
+const visionPrimaryButtonLink = computed(() => props.pageData?.vision?.primary_button_link || '/contact');
+const visionSecondaryButtonText = computed(() => props.pageData?.vision?.secondary_button_text || 'Read Our Stories');
+const visionSecondaryButtonLink = computed(() => props.pageData?.vision?.secondary_button_link || '/blog');
 </script>
 
 <style scoped>

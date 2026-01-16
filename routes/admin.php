@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\HomepageController;
 use App\Http\Controllers\Admin\ContactPageController;
+use App\Http\Controllers\Admin\AboutPageController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -52,5 +53,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Contact Page Management
         Route::get('/contact-page', [ContactPageController::class, 'index'])->name('contact-page.index');
         Route::post('/contact-page', [ContactPageController::class, 'update'])->name('contact-page.update');
+
+        // About Page Management
+        Route::get('/about-page', [AboutPageController::class, 'index'])->name('about-page.index');
+        Route::post('/about-page', [AboutPageController::class, 'update'])->name('about-page.update');
     });
 });
