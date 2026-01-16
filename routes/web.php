@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Models\ContactPageSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,7 +17,9 @@ Route::get('/about', function () {
 });
 
 Route::get('/contact', function () {
-    return Inertia::render('Contact/Index');
+    return Inertia::render('Contact/Index', [
+        'pageData' => ContactPageSetting::getContactPageData(),
+    ]);
 });
 
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

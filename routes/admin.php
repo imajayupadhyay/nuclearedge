@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\HomepageController;
+use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,5 +48,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Homepage Management
         Route::get('/homepage', [HomepageController::class, 'index'])->name('homepage.index');
         Route::post('/homepage', [HomepageController::class, 'update'])->name('homepage.update');
+
+        // Contact Page Management
+        Route::get('/contact-page', [ContactPageController::class, 'index'])->name('contact-page.index');
+        Route::post('/contact-page', [ContactPageController::class, 'update'])->name('contact-page.update');
     });
 });

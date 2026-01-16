@@ -63,16 +63,16 @@
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-4xl mx-auto text-center">
                     <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-4">
-                        Get in Touch
+                        {{ heroLabel }}
                     </p>
                     <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-                        Contact
+                        {{ heroHeadlineLine1 }}
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mt-2">
-                            Nuclear Edge
+                            {{ heroHeadlineLine2 }}
                         </span>
                     </h1>
                     <p class="text-xl text-slate-300 leading-relaxed max-w-3xl mx-auto">
-                        Let's discuss how we can help transform your business
+                        {{ heroParagraph }}
                     </p>
                 </div>
             </div>
@@ -91,11 +91,11 @@
                                 </svg>
                             </div>
                             <h3 class="text-xl font-bold text-slate-900 mb-3">Email Address</h3>
-                            <a href="mailto:connect.nuclearedge@gmail.com" class="text-slate-600 hover:text-orange-500 transition-colors duration-300 block mb-2">
-                                connect.nuclearedge@gmail.com
+                            <a :href="'mailto:' + contactEmail" class="text-slate-600 hover:text-orange-500 transition-colors duration-300 block mb-2">
+                                {{ contactEmail }}
                             </a>
-                            <a href="tel:+919315946467" class="text-slate-600 hover:text-orange-500 transition-colors duration-300 block">
-                                +91 9315946467
+                            <a :href="'tel:' + contactPhone.replace(/\s/g, '')" class="text-slate-600 hover:text-orange-500 transition-colors duration-300 block">
+                                {{ contactPhone }}
                             </a>
                         </div>
 
@@ -109,8 +109,8 @@
                             </div>
                             <h3 class="text-xl font-bold text-slate-900 mb-3">Office Address</h3>
                             <p class="text-slate-600 leading-relaxed">
-                                1195 Salarpuriya IndiraNagar<br/>
-                                Bangalore 560038
+                                {{ contactAddressLine1 }}<br/>
+                                {{ contactAddressLine2 }}
                             </p>
                         </div>
 
@@ -122,8 +122,8 @@
                                 </svg>
                             </div>
                             <h3 class="text-xl font-bold text-slate-900 mb-3">Phone Number</h3>
-                            <a href="tel:+919315946467" class="text-slate-600 hover:text-orange-500 transition-colors duration-300 text-lg font-semibold">
-                                +91 9315946467
+                            <a :href="'tel:' + contactPhone.replace(/\s/g, '')" class="text-slate-600 hover:text-orange-500 transition-colors duration-300 text-lg font-semibold">
+                                {{ contactPhone }}
                             </a>
                         </div>
                     </div>
@@ -140,13 +140,13 @@
                         <div>
                             <div class="mb-8">
                                 <h2 class="text-4xl font-bold text-slate-900 mb-4">
-                                    Drop Us a
+                                    {{ formHeadingLine1 }}
                                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                                        Line
+                                        {{ formHeadingLine2 }}
                                     </span>
                                 </h2>
                                 <p class="text-slate-600">
-                                    Your email address will not be published. Required fields are marked *
+                                    {{ formDescription }}
                                 </p>
                             </div>
 
@@ -251,18 +251,18 @@
                         <div>
                             <div class="mb-6">
                                 <h3 class="text-2xl font-bold text-slate-900 mb-2">
-                                    Find Us on
+                                    {{ mapHeadingLine1 }}
                                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                                        Map
+                                        {{ mapHeadingLine2 }}
                                     </span>
                                 </h3>
-                                <p class="text-slate-600">Visit our office in Bangalore</p>
+                                <p class="text-slate-600">{{ mapDescription }}</p>
                             </div>
 
                             <!-- Map Container -->
                             <div class="relative rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-200 h-[600px] group">
                                 <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.8287095842394!2d77.63924507507652!3d12.971598587338795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBangalore%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1704789600000!5m2!1sen!2sin"
+                                    :src="mapEmbedUrl"
                                     width="100%"
                                     height="100%"
                                     style="border:0;"
@@ -282,8 +282,8 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="font-bold text-slate-900 text-sm">Nuclear Edge</p>
-                                            <p class="text-xs text-slate-600">Bangalore, Karnataka</p>
+                                            <p class="font-bold text-slate-900 text-sm">{{ mapOverlayTitle }}</p>
+                                            <p class="text-xs text-slate-600">{{ mapOverlaySubtitle }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -310,20 +310,20 @@
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-3xl mx-auto text-center">
                     <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
-                        Ready to Start Your
+                        {{ ctaHeadingLine1 }}
                         <span class="block text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 mt-2">
-                            Journey?
+                            {{ ctaHeadingLine2 }}
                         </span>
                     </h2>
                     <p class="text-xl text-slate-300 mb-10 leading-relaxed">
-                        Join hundreds of businesses that have transformed with Nuclear Edge
+                        {{ ctaParagraph }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
-                            href="/about"
+                            :href="ctaButtonLink"
                             class="px-8 py-4 border-2 border-white/20 text-white font-semibold rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-orange-400 transition-all duration-300"
                         >
-                            Learn More About Us
+                            {{ ctaButtonText }}
                         </Link>
                     </div>
                 </div>
@@ -403,6 +403,13 @@ import { Link, Head, useForm, usePage } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
 
+const props = defineProps({
+    pageData: {
+        type: Object,
+        default: () => ({})
+    }
+});
+
 const page = usePage();
 const showThankYouModal = ref(false);
 
@@ -415,6 +422,38 @@ const form = useForm({
 });
 
 const successMessage = computed(() => page.props.flash?.success);
+
+// Hero Section computed properties
+const heroLabel = computed(() => props.pageData?.hero?.label || 'Get in Touch');
+const heroHeadlineLine1 = computed(() => props.pageData?.hero?.headline_line1 || 'Contact');
+const heroHeadlineLine2 = computed(() => props.pageData?.hero?.headline_line2 || 'Nuclear Edge');
+const heroParagraph = computed(() => props.pageData?.hero?.paragraph || "Let's discuss how we can help transform your business");
+
+// Contact Info computed properties
+const contactEmail = computed(() => props.pageData?.contact_info?.email || 'connect.nuclearedge@gmail.com');
+const contactPhone = computed(() => props.pageData?.contact_info?.phone || '+91 9315946467');
+const contactAddressLine1 = computed(() => props.pageData?.contact_info?.address_line1 || '1195 Salarpuriya IndiraNagar');
+const contactAddressLine2 = computed(() => props.pageData?.contact_info?.address_line2 || 'Bangalore 560038');
+
+// Form Section computed properties
+const formHeadingLine1 = computed(() => props.pageData?.form?.heading_line1 || 'Drop Us a');
+const formHeadingLine2 = computed(() => props.pageData?.form?.heading_line2 || 'Line');
+const formDescription = computed(() => props.pageData?.form?.description || 'Your email address will not be published. Required fields are marked *');
+
+// Map Section computed properties
+const mapHeadingLine1 = computed(() => props.pageData?.map?.heading_line1 || 'Find Us on');
+const mapHeadingLine2 = computed(() => props.pageData?.map?.heading_line2 || 'Map');
+const mapDescription = computed(() => props.pageData?.map?.description || 'Visit our office in Bangalore');
+const mapEmbedUrl = computed(() => props.pageData?.map?.embed_url || 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.8287095842394!2d77.63924507507652!3d12.971598587338795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBangalore%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1704789600000!5m2!1sen!2sin');
+const mapOverlayTitle = computed(() => props.pageData?.map?.overlay_title || 'Nuclear Edge');
+const mapOverlaySubtitle = computed(() => props.pageData?.map?.overlay_subtitle || 'Bangalore, Karnataka');
+
+// CTA Section computed properties
+const ctaHeadingLine1 = computed(() => props.pageData?.cta?.heading_line1 || 'Ready to Start Your');
+const ctaHeadingLine2 = computed(() => props.pageData?.cta?.heading_line2 || 'Journey?');
+const ctaParagraph = computed(() => props.pageData?.cta?.paragraph || 'Join hundreds of businesses that have transformed with Nuclear Edge');
+const ctaButtonText = computed(() => props.pageData?.cta?.button_text || 'Learn More About Us');
+const ctaButtonLink = computed(() => props.pageData?.cta?.button_link || '/about');
 
 const submitForm = () => {
     form.post('/contact', {
