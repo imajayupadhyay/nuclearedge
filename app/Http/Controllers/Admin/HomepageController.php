@@ -17,6 +17,13 @@ class HomepageController extends Controller
     {
         $settings = HomepageSetting::all()->pluck('value', 'key')->toArray();
 
+        // Parse tabs JSON for the form
+        if (isset($settings['tabs_data'])) {
+            $settings['tabs_data'] = json_decode($settings['tabs_data'], true) ?? [];
+        } else {
+            $settings['tabs_data'] = [];
+        }
+
         return Inertia::render('Admin/Homepage/Index', [
             'settings' => $settings,
         ]);
@@ -47,6 +54,25 @@ class HomepageController extends Controller
             'blog_carousel_heading_line1' => 'nullable|string|max:255',
             'blog_carousel_heading_line2' => 'nullable|string|max:255',
             'blog_carousel_paragraph' => 'nullable|string|max:500',
+
+            // Tabs Section
+            'tabs_data' => 'nullable|array',
+            'tabs_data.*.name' => 'required|string|max:100',
+            'tabs_data.*.label' => 'nullable|string|max:100',
+            'tabs_data.*.title' => 'nullable|string|max:255',
+            'tabs_data.*.description' => 'nullable|string|max:1000',
+            'tabs_data.*.image' => 'nullable|string|max:500',
+            'tabs_data.*.link' => 'nullable|string|max:500',
+            'tabs_data.*.buttonText' => 'nullable|string|max:100',
+            // Tab image uploads
+            'tab_images' => 'nullable|array',
+            'tab_images.*' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // 5MB max
+
+            // Featured Articles Section
+            'featured_articles_label' => 'nullable|string|max:100',
+            'featured_articles_heading_line1' => 'nullable|string|max:255',
+            'featured_articles_heading_line2' => 'nullable|string|max:255',
+            'featured_articles_paragraph' => 'nullable|string|max:500',
         ]);
 
         // Handle video file upload
@@ -78,6 +104,11 @@ class HomepageController extends Controller
             'blog_carousel_heading_line1',
             'blog_carousel_heading_line2',
             'blog_carousel_paragraph',
+            // Featured Articles Section
+            'featured_articles_label',
+            'featured_articles_heading_line1',
+            'featured_articles_heading_line2',
+            'featured_articles_paragraph',
         ];
 
         foreach ($fields as $field) {
@@ -92,6 +123,31 @@ class HomepageController extends Controller
                     ]
                 );
             }
+        }
+
+        // Handle tab image uploads
+        $tabsData = $validated['tabs_data'] ?? [];
+        if ($request->hasFile('tab_images')) {
+            foreach ($request->file('tab_images') as $index => $imageFile) {
+                if ($imageFile && isset($tabsData[$index])) {
+                    // Store new image
+                    $path = $imageFile->store('tabs', 'public');
+                    $tabsData[$index]['image'] = '/storage/' . $path;
+                }
+            }
+        }
+
+        // Save tabs data as JSON
+        if (array_key_exists('tabs_data', $validated)) {
+            HomepageSetting::updateOrCreate(
+                ['key' => 'tabs_data'],
+                [
+                    'value' => json_encode($tabsData),
+                    'type' => 'json',
+                    'group' => 'tabs',
+                    'label' => 'Tabs Data',
+                ]
+            );
         }
 
         HomepageSetting::clearCache();
@@ -123,6 +179,12 @@ class HomepageController extends Controller
         }
         if (str_starts_with($field, 'blog_carousel_')) {
             return 'blog_carousel';
+        }
+        if (str_starts_with($field, 'tabs_')) {
+            return 'tabs';
+        }
+        if (str_starts_with($field, 'featured_articles_')) {
+            return 'featured_articles';
         }
         return 'general';
     }

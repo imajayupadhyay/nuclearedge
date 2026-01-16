@@ -96,12 +96,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
+
+const props = defineProps({
+    tabsData: {
+        type: Array,
+        default: () => null
+    }
+});
 
 const activeTab = ref(0);
 
-const tabs = ref([
+// Default tabs (static content fallback)
+const defaultTabs = [
     {
         name: 'Our Solutions',
         label: 'COMPREHENSIVE SERVICES',
@@ -138,7 +146,15 @@ const tabs = ref([
         link: '/about',
         buttonText: 'Discover Technologies'
     }
-]);
+];
+
+// Use dynamic tabs if provided and not empty, otherwise use defaults
+const tabs = computed(() => {
+    if (props.tabsData && props.tabsData.length > 0) {
+        return props.tabsData;
+    }
+    return defaultTabs;
+});
 </script>
 
 <style scoped>

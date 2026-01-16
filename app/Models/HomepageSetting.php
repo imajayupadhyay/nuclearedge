@@ -47,6 +47,12 @@ class HomepageSetting extends Model
         return Cache::remember('homepage_settings', 3600, function () {
             $settings = self::all()->pluck('value', 'key')->toArray();
 
+            // Parse tabs JSON if exists
+            $tabs = null;
+            if (isset($settings['tabs_data'])) {
+                $tabs = json_decode($settings['tabs_data'], true);
+            }
+
             return [
                 // Hero Section
                 'hero' => [
@@ -64,6 +70,15 @@ class HomepageSetting extends Model
                     'heading_line1' => $settings['blog_carousel_heading_line1'] ?? null,
                     'heading_line2' => $settings['blog_carousel_heading_line2'] ?? null,
                     'paragraph' => $settings['blog_carousel_paragraph'] ?? null,
+                ],
+                // Tabs Section
+                'tabs' => $tabs,
+                // Featured Articles Section
+                'featured_articles' => [
+                    'label' => $settings['featured_articles_label'] ?? null,
+                    'heading_line1' => $settings['featured_articles_heading_line1'] ?? null,
+                    'heading_line2' => $settings['featured_articles_heading_line2'] ?? null,
+                    'paragraph' => $settings['featured_articles_paragraph'] ?? null,
                 ],
             ];
         });

@@ -41,10 +41,10 @@
         <BlogCarousel :blogs="carouselBlogs" :sectionData="homepageData?.blog_carousel" />
 
         <!-- Tabs Section -->
-        <TabsSection />
+        <TabsSection :tabsData="homepageData?.tabs" />
 
         <!-- Featured Articles Section -->
-        <FeaturedArticles :blogs="featuredArticles" />
+        <FeaturedArticles :blogs="featuredArticles" :sectionData="homepageData?.featured_articles" />
 
         <!-- Footer -->
         <Footer />

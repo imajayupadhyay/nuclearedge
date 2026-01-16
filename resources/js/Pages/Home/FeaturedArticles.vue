@@ -19,16 +19,16 @@
             <!-- Section Header -->
             <div class="text-center mb-16">
                 <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-4">
-                    Expert Knowledge
+                    {{ label }}
                 </p>
                 <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                    Featured
+                    {{ headingLine1 }}
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
-                        Perspectives
+                        {{ headingLine2 }}
                     </span>
                 </h2>
                 <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                    Explore our handpicked selection of expert insights and industry perspectives
+                    {{ paragraph }}
                 </p>
             </div>
 
@@ -115,16 +115,27 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
 const props = defineProps({
     blogs: {
         type: Array,
         default: () => []
+    },
+    sectionData: {
+        type: Object,
+        default: () => null
     }
 });
 
 const latestBlogs = props.blogs;
+
+// Computed properties with fallback to defaults
+const label = computed(() => props.sectionData?.label || 'Expert Knowledge');
+const headingLine1 = computed(() => props.sectionData?.heading_line1 || 'Featured');
+const headingLine2 = computed(() => props.sectionData?.heading_line2 || 'Perspectives');
+const paragraph = computed(() => props.sectionData?.paragraph || 'Explore our handpicked selection of expert insights and industry perspectives');
 </script>
 
 <style scoped>
