@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
 use App\Models\AboutPageSetting;
 use App\Models\ContactPageSetting;
+use App\Models\SuccessStoriesPageSetting;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -32,7 +33,9 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::get('/api/search-blogs', [BlogController::class, 'search'])->name('api.search-blogs');
 
 Route::get('/success-stories', function () {
-    return Inertia::render('SuccessStories/Index');
+    return Inertia::render('SuccessStories/Index', [
+        'pageData' => SuccessStoriesPageSetting::getSuccessStoriesPageData(),
+    ]);
 });
 
 // Blog detail page with SEO-friendly URLs: /category/blog-title

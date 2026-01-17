@@ -47,13 +47,13 @@
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-5xl mx-auto text-center">
                     <p class="text-orange-500 font-semibold text-sm uppercase tracking-wider mb-6">
-                        Success Stories
+                        {{ hero.label }}
                     </p>
                     <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8">
-                        How We Made It <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">Happen</span>
+                        {{ hero.headline_line1 }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">{{ hero.headline_line2 }}</span>
                     </h1>
                     <p class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                        Real businesses, real transformations, real results. Explore the stories of companies we've helped achieve extraordinary growth.
+                        {{ hero.paragraph }}
                     </p>
                 </div>
             </div>
@@ -148,7 +148,7 @@
                                 </p>
 
                                 <!-- Stats Bar (if available) -->
-                                <div v-if="story.stats" class="grid grid-cols-3 gap-4 mb-10">
+                                <div v-if="story.stats && story.stats.length > 0" class="grid grid-cols-3 gap-4 mb-10">
                                     <div
                                         v-for="(stat, idx) in story.stats"
                                         :key="idx"
@@ -283,26 +283,26 @@
             <div class="container mx-auto px-4 relative z-10">
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8">
-                        Ready to Write Your Own Success Story?
+                        {{ cta.heading_line1 }} {{ cta.heading_line2 }}
                     </h2>
                     <p class="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed">
-                        Join the companies that have transformed their business with Nuclear Edge. Let's discuss how we can help you achieve extraordinary results.
+                        {{ cta.paragraph }}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
-                            href="/contact"
+                            :href="cta.primary_button_link"
                             class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-orange-500 bg-white rounded-full hover:bg-slate-100 transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105"
                         >
-                            Get Started Today
+                            {{ cta.primary_button_text }}
                             <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                             </svg>
                         </Link>
                         <Link
-                            href="/about"
+                            :href="cta.secondary_button_link"
                             class="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-all duration-300 border border-white/30"
                         >
-                            Learn About Us
+                            {{ cta.secondary_button_text }}
                         </Link>
                     </div>
                 </div>
@@ -315,10 +315,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Head, Link } from '@inertiajs/vue3';
 import Header from '../../Components/Header.vue';
 import Footer from '../../Components/Footer.vue';
+
+const props = defineProps({
+    pageData: {
+        type: Object,
+        default: () => ({}),
+    },
+});
 
 const activeSection = ref({});
 
@@ -329,7 +336,25 @@ const toggleSection = (storyIndex, section) => {
     activeSection.value[storyIndex][section] = !activeSection.value[storyIndex][section];
 };
 
-const stories = ref([
+// Default static content
+const defaultHero = {
+    label: 'Success Stories',
+    headline_line1: 'How We Made It',
+    headline_line2: 'Happen',
+    paragraph: 'Real businesses, real transformations, real results. Explore the stories of companies we\'ve helped achieve extraordinary growth.',
+};
+
+const defaultCta = {
+    heading_line1: 'Ready to Write Your Own',
+    heading_line2: 'Success Story?',
+    paragraph: 'Join the companies that have transformed their business with Nuclear Edge. Let\'s discuss how we can help you achieve extraordinary results.',
+    primary_button_text: 'Get Started Today',
+    primary_button_link: '/contact',
+    secondary_button_text: 'Learn About Us',
+    secondary_button_link: '/about',
+};
+
+const defaultStories = [
     {
         company: 'Rajah Foods',
         industry: 'FMCG',
@@ -405,7 +430,39 @@ const stories = ref([
         outcome: 'The redesigned site led to a 60% increase in lead generation, significantly boosting their conversion rates. With improved visitor engagement and a sleek user experience, the website became a powerful tool for Allure Innovations to attract and retain clients. Today, their digital presence reflects the professionalism and innovation of their brand.',
         takeaway: 'Your digital presence is more than just a face for your business—it\'s a powerful tool for growth. Don\'t underestimate the importance of investing in your digital infrastructure.'
     }
-]);
+];
+
+// Use dynamic data with fallback to static content
+const hero = computed(() => {
+    const h = props.pageData?.hero || {};
+    return {
+        label: h.label || defaultHero.label,
+        headline_line1: h.headline_line1 || defaultHero.headline_line1,
+        headline_line2: h.headline_line2 || defaultHero.headline_line2,
+        paragraph: h.paragraph || defaultHero.paragraph,
+    };
+});
+
+const cta = computed(() => {
+    const c = props.pageData?.cta || {};
+    return {
+        heading_line1: c.heading_line1 || defaultCta.heading_line1,
+        heading_line2: c.heading_line2 || defaultCta.heading_line2,
+        paragraph: c.paragraph || defaultCta.paragraph,
+        primary_button_text: c.primary_button_text || defaultCta.primary_button_text,
+        primary_button_link: c.primary_button_link || defaultCta.primary_button_link,
+        secondary_button_text: c.secondary_button_text || defaultCta.secondary_button_text,
+        secondary_button_link: c.secondary_button_link || defaultCta.secondary_button_link,
+    };
+});
+
+const stories = computed(() => {
+    const s = props.pageData?.stories;
+    if (s && s.length > 0) {
+        return s;
+    }
+    return defaultStories;
+});
 </script>
 
 <style scoped>

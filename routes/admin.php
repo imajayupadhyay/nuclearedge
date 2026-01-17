@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\FooterController;
 use App\Http\Controllers\Admin\HomepageController;
 use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\AboutPageController;
+use App\Http\Controllers\Admin\SuccessStoriesPageController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
@@ -57,5 +58,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // About Page Management
         Route::get('/about-page', [AboutPageController::class, 'index'])->name('about-page.index');
         Route::post('/about-page', [AboutPageController::class, 'update'])->name('about-page.update');
+
+        // Success Stories Page Management
+        Route::get('/success-stories-page', [SuccessStoriesPageController::class, 'index'])->name('success-stories-page.index');
+        Route::post('/success-stories-page', [SuccessStoriesPageController::class, 'update'])->name('success-stories-page.update');
+        Route::post('/success-stories-page/stories', [SuccessStoriesPageController::class, 'storeStory'])->name('success-stories-page.stories.store');
+        Route::put('/success-stories-page/stories/{story}', [SuccessStoriesPageController::class, 'updateStory'])->name('success-stories-page.stories.update');
+        Route::delete('/success-stories-page/stories/{story}', [SuccessStoriesPageController::class, 'destroyStory'])->name('success-stories-page.stories.destroy');
+        Route::post('/success-stories-page/stories/reorder', [SuccessStoriesPageController::class, 'reorderStories'])->name('success-stories-page.stories.reorder');
     });
 });
