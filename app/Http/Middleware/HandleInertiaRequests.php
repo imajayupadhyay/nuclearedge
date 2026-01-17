@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\MenuItem;
 use App\Models\FooterSetting;
+use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -48,6 +49,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'menu' => fn () => MenuItem::getMenuTree(),
             'footer' => fn () => FooterSetting::getFooterData(),
+            'socialLinks' => fn () => SocialLink::getActiveSocialLinks(),
         ];
     }
 }

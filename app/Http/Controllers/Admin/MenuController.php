@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\MenuItem;
+use App\Models\SocialLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -16,9 +17,13 @@ class MenuController extends Controller
     public function index()
     {
         $menuItems = MenuItem::getAdminTree();
+        $socialLinks = SocialLink::orderBy('order')->get();
+        $defaultIcons = SocialLink::getDefaultIcons();
 
         return Inertia::render('Admin/Menus/Index', [
             'menuItems' => $menuItems,
+            'socialLinks' => $socialLinks,
+            'defaultIcons' => $defaultIcons,
         ]);
     }
 
@@ -119,5 +124,73 @@ class MenuController extends Controller
         MenuItem::clearCache();
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Store a new social link
+     */
+    public function storeSocialLink(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'url' => 'required|string|max:500',
+            'icon' => 'required|string',
+            'is_active' => 'boolean',
+        ]);
+
+        $maxOrder = SocialLink::max('order') ?? -1;
+        $validated['order'] = $maxOrder + 1;
+        $validated['is_active'] = $validated['is_active'] ?? true;
+
+        SocialLink::create($validated);
+
+        return back()->with('success', 'Social link added successfully.');
+    }
+
+    /**
+     * Update a social link
+     */
+    public function updateSocialLink(Request $request, SocialLink $socialLink)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'url' => 'required|string|max:500',
+            'icon' => 'required|string',
+            'is_active' => 'boolean',
+        ]);
+
+        $socialLink->update($validated);
+
+        return back()->with('success', 'Social link updated successfully.');
+    }
+
+    /**
+     * Delete a social link
+     */
+    public function destroySocialLink(SocialLink $socialLink)
+    {
+        $socialLink->delete();
+
+        return back()->with('success', 'Social link deleted successfully.');
+    }
+
+    /**
+     * Reorder social links
+     */
+    public function reorderSocialLinks(Request $request)
+    {
+        $validated = $request->validate([
+            'links' => 'required|array',
+            'links.*.id' => 'required|exists:social_links,id',
+            'links.*.order' => 'required|integer',
+        ]);
+
+        foreach ($validated['links'] as $item) {
+            SocialLink::where('id', $item['id'])->update(['order' => $item['order']]);
+        }
+
+        SocialLink::clearCache();
+
+        return back()->with('success', 'Social links reordered successfully.');
     }
 }

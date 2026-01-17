@@ -43,6 +43,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/menus/{menuItem}', [MenuController::class, 'destroy'])->name('menus.destroy');
         Route::post('/menus/reorder', [MenuController::class, 'reorder'])->name('menus.reorder');
 
+        // Social Links Management
+        Route::post('/social-links', [MenuController::class, 'storeSocialLink'])->name('social-links.store');
+        Route::put('/social-links/{socialLink}', [MenuController::class, 'updateSocialLink'])->name('social-links.update');
+        Route::delete('/social-links/{socialLink}', [MenuController::class, 'destroySocialLink'])->name('social-links.destroy');
+        Route::post('/social-links/reorder', [MenuController::class, 'reorderSocialLinks'])->name('social-links.reorder');
+
         // Footer Settings
         Route::get('/footer', [FooterController::class, 'index'])->name('footer.index');
         Route::put('/footer', [FooterController::class, 'update'])->name('footer.update');
