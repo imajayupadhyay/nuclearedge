@@ -235,7 +235,7 @@
                             <div class="relative">
                                 <div class="aspect-square rounded-3xl overflow-hidden">
                                     <img
-                                        src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80"
+                                        :src="excellenceImage"
                                         alt="Team collaboration"
                                         class="w-full h-full object-cover"
                                     />
@@ -369,6 +369,7 @@ const excellenceFeature3Title = computed(() => props.pageData?.excellence?.featu
 const excellenceFeature3Desc = computed(() => props.pageData?.excellence?.feature3_desc || 'From atoms to the big picture');
 const excellenceBadgeValue = computed(() => props.pageData?.excellence?.badge_value || '100+');
 const excellenceBadgeLabel = computed(() => props.pageData?.excellence?.badge_label || 'Happy Clients');
+const excellenceImage = computed(() => props.pageData?.excellence?.image || 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=80');
 
 // Vision Section
 const visionLabel = computed(() => props.pageData?.vision?.label || 'Our Vision');

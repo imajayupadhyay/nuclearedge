@@ -238,6 +238,47 @@
                         </div>
                     </div>
 
+                    <!-- Section Image -->
+                    <div class="mt-6 pt-6 border-t border-slate-200">
+                        <h4 class="font-semibold text-slate-900 mb-4">Section Image</h4>
+
+                        <!-- Current Image Preview -->
+                        <div v-if="excellenceImagePreview || form.excellence_image" class="mb-4">
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Current Image</label>
+                            <div class="relative rounded-lg overflow-hidden bg-slate-100 max-w-md">
+                                <img
+                                    :src="excellenceImagePreview || form.excellence_image"
+                                    alt="Excellence section image"
+                                    class="w-full h-48 object-cover"
+                                />
+                            </div>
+                            <p v-if="form.excellence_image && !excellenceImagePreview" class="text-xs text-slate-500 mt-2">{{ form.excellence_image }}</p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
+                                <input
+                                    v-model="form.excellence_image"
+                                    type="text"
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                    placeholder="/storage/about/excellence.jpg"
+                                />
+                                <p class="text-xs text-slate-500 mt-1">Enter a URL or upload a new image</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Upload New Image</label>
+                                <input
+                                    type="file"
+                                    @change="handleExcellenceImageUpload"
+                                    accept="image/jpeg,image/png,image/webp"
+                                    class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 file:mr-4 file:py-1 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+                                />
+                                <p class="text-xs text-slate-500 mt-1">Max 5MB. Formats: JPG, PNG, WebP</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Badge -->
                     <div class="mt-6 pt-6 border-t border-slate-200">
                         <h4 class="font-semibold text-slate-900 mb-4">Floating Badge</h4>
@@ -344,13 +385,17 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
 import AdminLayout from '../../../Components/Admin/AdminLayout.vue';
 
 const props = defineProps({
     settings: Object,
 });
+
+// Excellence image file and preview
+const excellenceImageFile = ref(null);
+const excellenceImagePreview = ref(null);
 
 const form = reactive({
     // Hero Section
@@ -390,6 +435,7 @@ const form = reactive({
     excellence_feature3_desc: props.settings?.excellence_feature3_desc || '',
     excellence_badge_value: props.settings?.excellence_badge_value || '',
     excellence_badge_label: props.settings?.excellence_badge_label || '',
+    excellence_image: props.settings?.excellence_image || '',
     // Vision Section
     vision_label: props.settings?.vision_label || '',
     vision_heading_line1: props.settings?.vision_heading_line1 || '',
@@ -402,12 +448,39 @@ const form = reactive({
     processing: false,
 });
 
+const handleExcellenceImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        excellenceImageFile.value = file;
+        // Create preview URL
+        excellenceImagePreview.value = URL.createObjectURL(file);
+    }
+};
+
 const saveSettings = () => {
     form.processing = true;
     const { processing, ...data } = form;
-    router.post('/admin/about-page', data, {
+
+    // Use FormData for file upload
+    const formData = new FormData();
+    Object.keys(data).forEach(key => {
+        formData.append(key, data[key] || '');
+    });
+
+    // Append image file if selected
+    if (excellenceImageFile.value) {
+        formData.append('excellence_image_file', excellenceImageFile.value);
+    }
+
+    router.post('/admin/about-page', formData, {
+        forceFormData: true,
         onFinish: () => {
             form.processing = false;
+            excellenceImageFile.value = null;
+            if (excellenceImagePreview.value) {
+                URL.revokeObjectURL(excellenceImagePreview.value);
+                excellenceImagePreview.value = null;
+            }
         },
     });
 };

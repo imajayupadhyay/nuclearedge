@@ -92,6 +92,7 @@ class AboutPageSetting extends Model
                     'feature3_desc' => $settings['excellence_feature3_desc'] ?? null,
                     'badge_value' => $settings['excellence_badge_value'] ?? null,
                     'badge_label' => $settings['excellence_badge_label'] ?? null,
+                    'image' => $settings['excellence_image'] ?? null,
                 ],
                 // Vision/CTA Section
                 'vision' => [

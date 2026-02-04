@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AboutPageSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class AboutPageController extends Controller
@@ -67,6 +68,8 @@ class AboutPageController extends Controller
             'excellence_feature3_desc' => 'nullable|string|max:255',
             'excellence_badge_value' => 'nullable|string|max:50',
             'excellence_badge_label' => 'nullable|string|max:100',
+            'excellence_image' => 'nullable|string|max:500',
+            'excellence_image_file' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120', // 5MB max
 
             // Vision/CTA Section
             'vision_label' => 'nullable|string|max:100',
@@ -79,6 +82,23 @@ class AboutPageController extends Controller
             'vision_secondary_button_link' => 'nullable|string|max:500',
         ]);
 
+        // Handle excellence image file upload
+        if ($request->hasFile('excellence_image_file')) {
+            // Delete old image if exists
+            $oldImage = AboutPageSetting::get('excellence_image');
+            if ($oldImage && str_starts_with($oldImage, '/storage/')) {
+                $oldPath = str_replace('/storage/', '', $oldImage);
+                Storage::disk('public')->delete($oldPath);
+            }
+
+            // Store new image
+            $path = $request->file('excellence_image_file')->store('about', 'public');
+            $validated['excellence_image'] = '/storage/' . $path;
+        }
+
+        // Exclude file field from iteration
+        unset($validated['excellence_image_file']);
+
         $fields = array_keys($validated);
 
         foreach ($fields as $field) {
@@ -87,7 +107,7 @@ class AboutPageController extends Controller
                     ['key' => $field],
                     [
                         'value' => $validated[$field],
-                        'type' => 'text',
+                        'type' => $this->getFieldType($field),
                         'group' => $this->getGroup($field),
                         'label' => $this->getLabel($field),
                     ]
@@ -129,5 +149,19 @@ class AboutPageController extends Controller
     private function getLabel(string $field): string
     {
         return ucwords(str_replace('_', ' ', $field));
+    }
+
+    /**
+     * Get type for a field
+     */
+    private function getFieldType(string $field): string
+    {
+        if (str_ends_with($field, '_image')) {
+            return 'image';
+        }
+        if (str_ends_with($field, '_paragraph') || str_ends_with($field, '_paragraph1') || str_ends_with($field, '_paragraph2')) {
+            return 'textarea';
+        }
+        return 'text';
     }
 }
