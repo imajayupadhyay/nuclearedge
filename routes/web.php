@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\TalkHealsController;
 use App\Models\AboutPageSetting;
 use App\Models\ContactPageSetting;
 use App\Models\SuccessStoriesPageSetting;
@@ -45,6 +46,7 @@ Route::prefix('private/clientdiscovery/talkheals')->group(function () {
     Route::get('/',          fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Index'));
     Route::get('/discovery', fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Discovery'));
     Route::get('/psychlab',  fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Psychlab'));
+    Route::post('/discovery/submit', [TalkHealsController::class, 'storeDiscovery'])->name('talkheals.discovery.submit');
 });
 
 // Blog detail page with SEO-friendly URLs: /category/blog-title

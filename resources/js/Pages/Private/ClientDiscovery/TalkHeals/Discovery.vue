@@ -364,7 +364,30 @@ function goNext() {
         sectionIdx.value++;
         qIdx.value = 0;
     } else {
+        submitAnswers();
         screen.value = 'results';
+    }
+}
+
+function submitAnswers() {
+    try {
+        const token = document.cookie
+            .split(';')
+            .map(c => c.trim())
+            .find(c => c.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1];
+
+        fetch('/private/clientdiscovery/talkheals/discovery/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-XSRF-TOKEN': token ? decodeURIComponent(token) : '',
+            },
+            body: JSON.stringify({ answers: answers.value }),
+        }).catch(() => {}); // silent — thank you screen always shows
+    } catch {
+        // silent
     }
 }
 

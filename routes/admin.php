@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ContactPageController;
 use App\Http\Controllers\Admin\AboutPageController;
 use App\Http\Controllers\Admin\SuccessStoriesPageController;
 use App\Http\Controllers\Admin\NewsletterController;
+use App\Http\Controllers\Admin\TalkHealsDiscoveryController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/contacts/{contact}/mark-unread', [ContactController::class, 'markAsUnread'])->name('contacts.mark-unread');
 
         Route::resource('newsletters', NewsletterController::class)->only(['index', 'destroy']);
+
+        // TalkHeals Discovery Responses
+        Route::get('/talkheals-discovery', [TalkHealsDiscoveryController::class, 'index'])->name('talkheals-discovery.index');
+        Route::get('/talkheals-discovery/{response}', [TalkHealsDiscoveryController::class, 'show'])->name('talkheals-discovery.show');
+        Route::delete('/talkheals-discovery/{response}', [TalkHealsDiscoveryController::class, 'destroy'])->name('talkheals-discovery.destroy');
+        Route::post('/talkheals-discovery/{response}/mark-reviewed', [TalkHealsDiscoveryController::class, 'markReviewed'])->name('talkheals-discovery.mark-reviewed');
+        Route::post('/talkheals-discovery/{response}/mark-unreviewed', [TalkHealsDiscoveryController::class, 'markUnreviewed'])->name('talkheals-discovery.mark-unreviewed');
 
         // Menu Management
         Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');

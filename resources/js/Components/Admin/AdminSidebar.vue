@@ -250,6 +250,19 @@
                         </svg>
                         <span class="font-medium">Newsletter</span>
                     </a>
+
+                    <a
+                        href="/admin/talkheals-discovery"
+                        :class="[
+                            'flex items-center px-3 py-2.5 rounded-lg transition-all duration-200',
+                            page.url.startsWith('/admin/talkheals-discovery')
+                                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg'
+                                : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                        ]"
+                    >
+                        <span class="w-5 h-5 mr-3 flex items-center justify-center text-base leading-none">🌿</span>
+                        <span class="font-medium">TalkHeals Discovery</span>
+                    </a>
                 </div>
             </div>
 
