@@ -76,7 +76,7 @@
 
                 <!-- CTA -->
                 <div v-if="allDone" class="cta-wrap fade-up-4">
-                    <button class="btn-primary" @click="generateProfile">Generate My Psychological Profile ✨</button>
+                    <button class="btn-primary" @click="generateProfile">Submit Report ✨</button>
                 </div>
                 <p v-else class="cta-hint">Complete all 7 games to unlock your full profile</p>
             </div>
@@ -111,7 +111,7 @@
                                         <circle cx="32" cy="32" r="20" fill="none" stroke="#6BAF89"
                                             stroke-width="3" stroke-linecap="round"
                                             :stroke-dasharray="TIMER_CIRC"
-                                            :stroke-dashoffset="TIMER_CIRC * (1 - timerVal / 4)"
+                                            :stroke-dashoffset="TIMER_CIRC * (1 - timerVal / 10)"
                                             style="transition:stroke-dashoffset 0.9s linear;"/>
                                     </svg>
                                     <span class="timer-num">{{ timerVal }}</span>
@@ -141,7 +141,7 @@
                                         <circle cx="32" cy="32" r="20" fill="none" stroke="#F59E0B"
                                             stroke-width="3" stroke-linecap="round"
                                             :stroke-dasharray="TIMER_CIRC"
-                                            :stroke-dashoffset="TIMER_CIRC * (1 - timerVal / 6)"
+                                            :stroke-dashoffset="TIMER_CIRC * (1 - timerVal / 10)"
                                             style="transition:stroke-dashoffset 0.9s linear;"/>
                                     </svg>
                                     <span class="timer-num" style="color:#C4937A;">{{ timerVal }}</span>
@@ -163,7 +163,7 @@
                                         <circle cx="32" cy="32" r="20" fill="none" stroke="#10B981"
                                             stroke-width="3" stroke-linecap="round"
                                             :stroke-dasharray="TIMER_CIRC"
-                                            :stroke-dashoffset="TIMER_CIRC * (1 - timerVal / 6)"
+                                            :stroke-dashoffset="TIMER_CIRC * (1 - timerVal / 10)"
                                             style="transition:stroke-dashoffset 0.9s linear;"/>
                                     </svg>
                                     <span class="timer-num" style="color:#6BAF89;">{{ timerVal }}</span>
@@ -249,12 +249,56 @@
                 </div>
             </div>
 
+            <!-- ══════════════ NAME + NOTE CAPTURE ══════════════ -->
+            <div v-else-if="screen === 'name'" key="name" class="lab-shell">
+                <div class="intro-wrap">
+                    <div class="intro-card fade-up">
+                        <div class="float-icon">✨</div>
+                        <h1 class="lab-h1" style="font-size:32px;">Almost There</h1>
+                        <p class="lab-sub green">One last step before your profile</p>
+                        <div class="intro-divider"></div>
+                        <p class="lab-body" style="margin-bottom:24px;">
+                            Please share your name so our team can personalise your psychological analysis.
+                        </p>
+
+                        <input
+                            v-model="userName"
+                            type="text"
+                            class="lab-name-input"
+                            placeholder="Your full name..."
+                            @keyup.enter="userName.trim() && submitAndFinish()"
+                            autofocus
+                        />
+
+                        <div style="margin-top:24px;width:100%;">
+                            <p class="note-label">💬 Anything we may have missed?</p>
+                            <textarea
+                                v-model="userNote"
+                                class="note-textarea"
+                                placeholder="If something is missed you can tell us here..."
+                                rows="3"
+                            ></textarea>
+                        </div>
+
+                        <button
+                            class="btn-primary"
+                            style="margin-top:24px;width:100%;"
+                            :disabled="!userName.trim()"
+                            :style="!userName.trim() ? { opacity: '0.4', cursor: 'not-allowed' } : {}"
+                            @click="submitAndFinish"
+                        >
+                            Submit Report ✨
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- ══════════════ THANK YOU ══════════════ -->
             <div v-else-if="screen === 'report'" key="report" class="lab-shell">
                 <div class="thankyou-wrap">
                     <div class="thankyou-card fade-up">
                         <div class="ty-icon">🔬</div>
-                        <h1 class="lab-h1 ty-title">Thank You,<br><em>Namrata.</em></h1>
+                        <h1 class="lab-h1 ty-title">Thank You,<br><em>{{ userName }}.</em></h1>
                         <div class="ty-divider"></div>
                         <p class="lab-body ty-body">
                             All 7 games completed. Your psychological responses have been captured
@@ -298,7 +342,7 @@ const TRAIT_KEYS = Object.keys(TRAITS);
 const GAMES = [
     { id: 'word',    title: 'Word Flash',     subtitle: 'First instinct only',         icon: '⚡', color: '#8A5CF6', timed: true },
     { id: 'inkblot', title: 'Shape Stories',  subtitle: 'What do you see?',            icon: '🔮', color: '#EC4899', timed: false },
-    { id: 'dilemma', title: 'Split Seconds',  subtitle: '6 seconds to decide',         icon: '⚖️', color: '#F59E0B', timed: true },
+    { id: 'dilemma', title: 'Split Seconds',  subtitle: '10 seconds to decide',         icon: '⚖️', color: '#F59E0B', timed: true },
     { id: 'memory',  title: 'Memory Imprint', subtitle: 'What stays with you?',        icon: '🧠', color: '#10B981', timed: false },
     { id: 'story',   title: 'Story Compass',  subtitle: 'You choose the ending',       icon: '📖', color: '#F97316', timed: false },
     { id: 'desert',  title: 'Desert Island',  subtitle: 'Forced choices reveal truth', icon: '🏝️', color: '#06B6D4', timed: false },
@@ -383,6 +427,8 @@ const activeGame = ref(null);
 const completed  = ref([]);
 const scores     = reactive(Object.fromEntries(TRAIT_KEYS.map(k => [k, 50])));
 const gameData   = reactive({});
+const userName   = ref('');
+const userNote   = ref('');
 
 // Timer
 const timerVal = ref(0);
@@ -491,7 +537,7 @@ function exitGame() {
    GAME 1 — WORD FLASH
 ══════════════════════════════════ */
 function startWordTimer() {
-    startTimer(4, () => pickWord(null));
+    startTimer(10, () => pickWord(null));
 }
 function pickWord(opt) {
     stopTimer();
@@ -531,7 +577,7 @@ function pickInkblot(opt) {
 ══════════════════════════════════ */
 function startDilTimer() {
     dilPicked.value = false;
-    startTimer(6, () => { if (!dilPicked.value) pickDilemma(null); });
+    startTimer(10, () => { if (!dilPicked.value) pickDilemma(null); });
 }
 function pickDilemma(opt) {
     if (dilPicked.value) return;
@@ -628,6 +674,11 @@ function submitMirror() {
 }
 
 function generateProfile() {
+    screen.value = 'name';
+}
+
+function submitAndFinish() {
+    if (!userName.value.trim()) return;
     submitResults();
     screen.value = 'report';
 }
@@ -648,8 +699,10 @@ function submitResults() {
                 'X-XSRF-TOKEN': token ? decodeURIComponent(token) : '',
             },
             body: JSON.stringify({
+                name:            userName.value.trim(),
                 scores:          { ...scores },
                 completed_games: completed.value,
+                note:            userNote.value.trim() || null,
             }),
         }).catch(() => {}); // silent — thank you screen always shows
     } catch {
@@ -810,6 +863,44 @@ onUnmounted(() => stopTimer());
 .trait-bar-track { flex: 1; height: 6px; background: #0A1510; border-radius: 3px; overflow: hidden; }
 .trait-bar-fill  { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(0.22,1,0.36,1); }
 .trait-val { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 700; width: 36px; text-align: right; }
+
+/* Name + note capture */
+.lab-name-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: #1A2E22;
+    border: 1.5px solid #3D6B52;
+    border-radius: 12px;
+    color: #E8F5EE;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+.lab-name-input::placeholder { color: #4A7A5A; }
+.lab-name-input:focus { border-color: #6BAF89; box-shadow: 0 0 0 3px rgba(107,175,137,0.15); }
+
+/* Note field */
+.note-wrap { width: 100%; max-width: 560px; margin-top: 28px; }
+.note-label { font-family: 'DM Sans', sans-serif; font-size: 13px; color: #6BAF89; margin-bottom: 10px; font-weight: 500; }
+.note-textarea {
+    width: 100%;
+    background: #121F18;
+    border: 1.5px solid #1E3028;
+    border-radius: 12px;
+    color: #C8E6D4;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 14px 16px;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+.note-textarea::placeholder { color: #3D6B52; }
+.note-textarea:focus { border-color: #6BAF89; box-shadow: 0 0 0 3px rgba(107,175,137,0.12); }
 
 .cta-wrap { text-align: center; margin-top: 8px; width: 100%; max-width: 320px; }
 .cta-hint { color: #2A4535; font-size: 13px; text-align: center; margin-top: 8px; }

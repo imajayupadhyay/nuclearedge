@@ -61,9 +61,15 @@
                 <p class="text-sm font-medium text-slate-900">TalkHeals PsychLab</p>
             </div>
             <div>
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Client</p>
-                <p class="text-sm font-medium text-slate-900">Namrata · TalkHeals Psychotherapy</p>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Submitted By</p>
+                <p class="text-sm font-medium text-slate-900">{{ response.name || 'Unknown' }}</p>
             </div>
+        </div>
+
+        <!-- User Note -->
+        <div v-if="response.note" class="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-6">
+            <p class="text-xs font-semibold text-amber-600 uppercase tracking-wider mb-2">💬 User Note</p>
+            <p class="text-sm text-amber-900 leading-relaxed">{{ response.note }}</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

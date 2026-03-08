@@ -120,8 +120,7 @@
 
             <!-- Footer note -->
             <footer class="portal-footer fade-up-4">
-                <p>Designed exclusively for Namrata Mam · TalkHeals Psychotherapy · Brampton, Ontario</p>
-                <p class="footer-year">© {{ currentYear }} Nuclear Edge · All Rights Reserved · Strictly Private</p>
+<p class="footer-year">© {{ currentYear }} Nuclear Edge · All Rights Reserved · Strictly Private</p>
             </footer>
         </div>
     </div>

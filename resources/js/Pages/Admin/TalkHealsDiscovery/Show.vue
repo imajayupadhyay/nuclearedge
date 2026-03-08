@@ -62,8 +62,8 @@
                 <p class="text-sm font-medium text-slate-900">TalkHeals Deep Discovery</p>
             </div>
             <div>
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Client</p>
-                <p class="text-sm font-medium text-slate-900">Namrata · TalkHeals Psychotherapy</p>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Submitted By</p>
+                <p class="text-sm font-medium text-slate-900">{{ response.name || 'Unknown' }}</p>
             </div>
         </div>
 

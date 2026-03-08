@@ -8,7 +8,7 @@ class TalkHealsPsychlabResponse extends Model
 {
     protected $table = 'talkheals_psychlab_responses';
 
-    protected $fillable = ['scores', 'completed_games', 'is_reviewed'];
+    protected $fillable = ['name', 'scores', 'completed_games', 'note', 'is_reviewed'];
 
     protected $casts = [
         'scores'          => 'array',

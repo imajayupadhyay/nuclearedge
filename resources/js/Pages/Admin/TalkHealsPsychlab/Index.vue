@@ -94,6 +94,7 @@
                     <thead class="bg-slate-50 border-b border-slate-200">
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">#</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Name</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Submitted</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Games Completed</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Top Traits</th>
@@ -103,7 +104,7 @@
                     </thead>
                     <tbody class="divide-y divide-slate-200">
                         <tr v-if="responses.data.length === 0">
-                            <td colspan="6" class="px-6 py-16 text-center">
+                            <td colspan="7" class="px-6 py-16 text-center">
                                 <div class="text-6xl mb-4">🔬</div>
                                 <p class="text-lg font-medium text-slate-500">No sessions yet</p>
                                 <p class="text-sm text-slate-400 mt-1">PsychLab results will appear here once submitted</p>
@@ -116,6 +117,9 @@
                                 <div class="w-9 h-9 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
                                     <span class="text-white text-xs font-bold">#{{ r.id }}</span>
                                 </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-semibold text-slate-900">{{ r.name || '—' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-slate-900">{{ formatDate(r.created_at) }}</div>

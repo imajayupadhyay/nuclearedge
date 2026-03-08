@@ -8,7 +8,7 @@ class TalkHealsDiscoveryResponse extends Model
 {
     protected $table = 'talkheals_discovery_responses';
 
-    protected $fillable = ['answers', 'is_reviewed'];
+    protected $fillable = ['name', 'answers', 'is_reviewed'];
 
     protected $casts = [
         'answers'     => 'array',

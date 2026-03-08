@@ -26,7 +26,6 @@
                             </span>
                         </div>
                         <button class="btn-start" @click="startQuiz">Begin My Discovery →</button>
-                        <p class="intro-credit">Designed exclusively for Namrata Mam · TalkHeals Psychotherapy</p>
                     </div>
                 </div>
             </div>
@@ -157,27 +156,30 @@
                                 </div>
                             </div>
 
-                            <!-- SLIDER -->
+                            <!-- SLIDER (scale buttons) -->
                             <div v-else-if="currentQ.type === 'slider'" class="slider-wrap">
-                                <div class="slider-labels">
+                                <div class="scale-buttons">
+                                    <button
+                                        v-for="n in (currentQ.max - currentQ.min + 1)"
+                                        :key="n + currentQ.min - 1"
+                                        class="scale-btn"
+                                        :class="{ active: (answers[currentQ.id] ?? null) === (n + currentQ.min - 1) }"
+                                        :style="(answers[currentQ.id] ?? null) === (n + currentQ.min - 1)
+                                            ? { background: currentSection.color, color: '#0E1A14', borderColor: currentSection.color }
+                                            : { borderColor: currentSection.color + '40' }"
+                                        @click="answers[currentQ.id] = n + currentQ.min - 1"
+                                    >{{ n + currentQ.min - 1 }}</button>
+                                </div>
+                                <div class="scale-labels">
                                     <span>{{ currentQ.labels[0] }}</span>
                                     <span>{{ currentQ.labels[2] }}</span>
                                 </div>
-                                <input
-                                    type="range"
-                                    class="q-slider"
-                                    :min="currentQ.min"
-                                    :max="currentQ.max"
-                                    :style="{ accentColor: currentSection.color }"
-                                    :value="answers[currentQ.id] ?? 5"
-                                    @input="answers[currentQ.id] = Number($event.target.value)"
-                                />
-                                <div class="slider-val-wrap">
+                                <div v-if="answers[currentQ.id] != null" class="slider-val-wrap">
                                     <span class="slider-val" :style="{ background: currentSection.color + '22', color: currentSection.color }">
-                                        {{ answers[currentQ.id] ?? 5 }} / {{ currentQ.max }}
+                                        {{ answers[currentQ.id] }} / {{ currentQ.max }}
                                     </span>
+                                    <p class="hint-text" style="text-align:center;margin-top:8px;">{{ currentQ.labels[1] }}</p>
                                 </div>
-                                <p class="hint-text" style="text-align:center;margin-top:8px;">{{ currentQ.labels[1] }}</p>
                             </div>
 
                             <!-- RANKING -->
@@ -221,12 +223,43 @@
                 <p class="quiz-footer">Confidential · TalkHeals Discovery Session · {{ year }}</p>
             </div>
 
+            <!-- ─── NAME CAPTURE ─── -->
+            <div v-else-if="screen === 'name'" key="name" class="disc-shell">
+                <div class="intro-wrap">
+                    <div class="intro-card fade-up">
+                        <div class="float-icon">✨</div>
+                        <h1 class="intro-title">Almost Done,<br><em>One Last Thing</em></h1>
+                        <div class="intro-divider"></div>
+                        <p class="intro-body" style="margin-bottom:28px;">
+                            Before we save your responses, please share your name so our team can personalise your analysis.
+                        </p>
+                        <input
+                            v-model="userName"
+                            type="text"
+                            class="name-input"
+                            placeholder="Your full name..."
+                            @keyup.enter="userName.trim() && submitAndFinish()"
+                            autofocus
+                        />
+                        <button
+                            class="btn-start"
+                            style="margin-top:20px;"
+                            :disabled="!userName.trim()"
+                            :style="!userName.trim() ? { opacity: '0.45', cursor: 'not-allowed' } : {}"
+                            @click="submitAndFinish"
+                        >
+                            Submit My Discovery ✨
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- ─── THANK YOU ─── -->
             <div v-else-if="screen === 'results'" key="results" class="disc-shell">
                 <div class="thankyou-wrap">
                     <div class="thankyou-card fade-up">
                         <div class="thankyou-icon">🌿</div>
-                        <h1 class="thankyou-title">Thank You,<br><em>Namrata.</em></h1>
+                        <h1 class="thankyou-title">Thank You,<br><em>{{ userName }}.</em></h1>
                         <div class="intro-divider"></div>
                         <p class="thankyou-body">
                             Your responses have been received. Every answer you shared brings us
@@ -235,12 +268,17 @@
                         <p class="thankyou-sub">
                             Our team will carefully review your discovery and be in touch soon.
                         </p>
-                        <div class="thankyou-meta">
-                            <span class="meta-check">✓</span>
-                            {{ Object.keys(answers).length }} responses submitted · Fully confidential
+
+                        <div class="psychlab-nudge">
+                            <div class="nudge-divider"></div>
+                            <p class="nudge-text">
+                                Kindly take the other set of questions — it will take just <strong>5 more minutes</strong> for better analysis for our team.
+                            </p>
+                            <a href="/private/clientdiscovery/talkheals/psychlab" class="nudge-btn">
+                                Continue to PsychLab →
+                            </a>
                         </div>
-                        <button class="btn-start" style="margin-top:8px;" @click="retake">Start Over</button>
-                        <p class="intro-credit" style="margin-top:16px;">Nuclear Edge · TalkHeals Psychotherapy · Brampton, Ontario</p>
+
                     </div>
                 </div>
             </div>
@@ -311,6 +349,7 @@ const sectionIdx = ref(0);
 const qIdx       = ref(0);
 const answers    = ref({});
 const rankingState = ref({});
+const userName   = ref('');
 
 /* ─── DERIVED ─── */
 const currentSection = computed(() => SECTIONS[sectionIdx.value]);
@@ -323,7 +362,7 @@ const canProceed = computed(() => {
     const q = currentQ.value;
     if (!q) return false;
     if (q.type === 'ranking') return true;
-    if (q.type === 'slider')  return true;
+    if (q.type === 'slider')  return answers.value[q.id] != null;
     const a = answers.value[q.id];
     if (a === null || a === undefined) return false;
     if (typeof a === 'string')  return a.trim().length > 0;
@@ -346,9 +385,7 @@ watch(currentQ, (q) => {
         rankingState.value[q.id] = [...q.items];
         answers.value[q.id] = [...q.items];
     }
-    if (q.type === 'slider' && answers.value[q.id] === undefined) {
-        answers.value[q.id] = 5;
-    }
+    // slider: no auto-init, user must pick a value
 }, { immediate: true });
 
 /* ─── ACTIONS ─── */
@@ -364,12 +401,12 @@ function goNext() {
         sectionIdx.value++;
         qIdx.value = 0;
     } else {
-        submitAnswers();
-        screen.value = 'results';
+        screen.value = 'name';
     }
 }
 
-function submitAnswers() {
+function submitAndFinish() {
+    if (!userName.value.trim()) return;
     try {
         const token = document.cookie
             .split(';')
@@ -384,11 +421,12 @@ function submitAnswers() {
                 'Accept': 'application/json',
                 'X-XSRF-TOKEN': token ? decodeURIComponent(token) : '',
             },
-            body: JSON.stringify({ answers: answers.value }),
-        }).catch(() => {}); // silent — thank you screen always shows
+            body: JSON.stringify({ name: userName.value.trim(), answers: answers.value }),
+        }).catch(() => {});
     } catch {
         // silent
     }
+    screen.value = 'results';
 }
 
 function goBack() {
@@ -558,6 +596,23 @@ function rankMove(id, i, dir) {
     border-radius: 100px;
     font-size: 12px;
 }
+/* Name input */
+.name-input {
+    width: 100%;
+    padding: 16px 20px;
+    background: #1E3028;
+    border: 1.5px solid #3D6B52;
+    border-radius: 12px;
+    color: #E8F5EE;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+}
+.name-input::placeholder { color: #4A7A5A; }
+.name-input:focus { border-color: #6BAF89; box-shadow: 0 0 0 3px rgba(107,175,137,0.15); }
+
 .btn-start {
     width: 100%;
     padding: 16px;
@@ -751,26 +806,51 @@ function rankMove(id, i, dir) {
     border: 2px solid #2A4535;
 }
 
-/* Slider */
-.slider-wrap { display: flex; flex-direction: column; }
-.slider-labels { display: flex; justify-content: space-between; margin-bottom: 20px; color: #3D6B52; font-size: 12px; }
-.q-slider {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
+/* Scale (slider replacement) */
+.slider-wrap { display: flex; flex-direction: column; gap: 0; }
+.scale-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+.scale-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    border: 1.5px solid #3D6B5240;
+    background: #121F18;
+    color: #A8C9B5;
+    font-size: 17px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.scale-btn:hover:not(.active) {
     background: #1E3028;
-    outline: none;
-    cursor: pointer;
+    color: #E8F5EE;
+    border-color: #6BAF8980;
+    transform: translateY(-2px);
 }
-.q-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
+.scale-btn.active {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 14px #6BAF8940;
+    font-size: 19px;
 }
-.slider-val-wrap { text-align: center; margin-top: 16px; }
+.scale-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #3D6B52;
+    font-size: 12px;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+.slider-val-wrap { text-align: center; margin-top: 4px; }
 .slider-val {
     display: inline-block;
     padding: 8px 24px;
@@ -906,6 +986,44 @@ function rankMove(id, i, dir) {
     margin-bottom: 28px;
 }
 .meta-check { color: #6BAF89; font-weight: 700; }
+
+/* PsychLab nudge */
+.psychlab-nudge { margin-top: 32px; width: 100%; }
+.nudge-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #3D6B52, transparent);
+    margin: 0 auto 24px;
+}
+.nudge-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: #5A8A6A;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    text-align: center;
+    padding: 0 8px;
+}
+.nudge-text strong { color: #6BAF89; font-weight: 600; }
+.nudge-btn {
+    display: inline-block;
+    padding: 12px 32px;
+    border: 1.5px solid #6BAF89;
+    border-radius: 100px;
+    color: #6BAF89;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    transition: all 0.22s ease;
+}
+.nudge-btn:hover {
+    background: #6BAF89;
+    color: #0E1A14;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(107,175,137,0.35);
+}
 
 /* ─── Responsive ─── */
 @media (max-width: 560px) {
