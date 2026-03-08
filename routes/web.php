@@ -7,6 +7,8 @@ use App\Http\Controllers\NewsletterController;
 use App\Models\AboutPageSetting;
 use App\Models\ContactPageSetting;
 use App\Models\SuccessStoriesPageSetting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -36,6 +38,13 @@ Route::get('/success-stories', function () {
     return Inertia::render('SuccessStories/Index', [
         'pageData' => SuccessStoriesPageSetting::getSuccessStoriesPageData(),
     ]);
+});
+
+// ── Private Client Discovery: TalkHeals ──
+Route::prefix('private/clientdiscovery/talkheals')->group(function () {
+    Route::get('/',          fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Index'));
+    Route::get('/discovery', fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Discovery'));
+    Route::get('/psychlab',  fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Psychlab'));
 });
 
 // Blog detail page with SEO-friendly URLs: /category/blog-title
