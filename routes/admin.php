@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AboutPageController;
 use App\Http\Controllers\Admin\SuccessStoriesPageController;
 use App\Http\Controllers\Admin\NewsletterController;
 use App\Http\Controllers\Admin\TalkHealsDiscoveryController;
+use App\Http\Controllers\Admin\TalkHealsPsychlabController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/talkheals-discovery/{response}', [TalkHealsDiscoveryController::class, 'destroy'])->name('talkheals-discovery.destroy');
         Route::post('/talkheals-discovery/{response}/mark-reviewed', [TalkHealsDiscoveryController::class, 'markReviewed'])->name('talkheals-discovery.mark-reviewed');
         Route::post('/talkheals-discovery/{response}/mark-unreviewed', [TalkHealsDiscoveryController::class, 'markUnreviewed'])->name('talkheals-discovery.mark-unreviewed');
+
+        // TalkHeals PsychLab Responses
+        Route::get('/talkheals-psychlab', [TalkHealsPsychlabController::class, 'index'])->name('talkheals-psychlab.index');
+        Route::get('/talkheals-psychlab/{response}', [TalkHealsPsychlabController::class, 'show'])->name('talkheals-psychlab.show');
+        Route::delete('/talkheals-psychlab/{response}', [TalkHealsPsychlabController::class, 'destroy'])->name('talkheals-psychlab.destroy');
+        Route::post('/talkheals-psychlab/{response}/mark-reviewed', [TalkHealsPsychlabController::class, 'markReviewed'])->name('talkheals-psychlab.mark-reviewed');
+        Route::post('/talkheals-psychlab/{response}/mark-unreviewed', [TalkHealsPsychlabController::class, 'markUnreviewed'])->name('talkheals-psychlab.mark-unreviewed');
 
         // Menu Management
         Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');

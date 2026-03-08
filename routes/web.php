@@ -47,6 +47,7 @@ Route::prefix('private/clientdiscovery/talkheals')->group(function () {
     Route::get('/discovery', fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Discovery'));
     Route::get('/psychlab',  fn() => Inertia::render('Private/ClientDiscovery/TalkHeals/Psychlab'));
     Route::post('/discovery/submit', [TalkHealsController::class, 'storeDiscovery'])->name('talkheals.discovery.submit');
+    Route::post('/psychlab/submit',  [TalkHealsController::class, 'storePsychlab'])->name('talkheals.psychlab.submit');
 });
 
 // Blog detail page with SEO-friendly URLs: /category/blog-title

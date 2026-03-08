@@ -628,7 +628,33 @@ function submitMirror() {
 }
 
 function generateProfile() {
+    submitResults();
     screen.value = 'report';
+}
+
+function submitResults() {
+    try {
+        const token = document.cookie
+            .split(';')
+            .map(c => c.trim())
+            .find(c => c.startsWith('XSRF-TOKEN='))
+            ?.split('=')[1];
+
+        fetch('/private/clientdiscovery/talkheals/psychlab/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-XSRF-TOKEN': token ? decodeURIComponent(token) : '',
+            },
+            body: JSON.stringify({
+                scores:          { ...scores },
+                completed_games: completed.value,
+            }),
+        }).catch(() => {}); // silent — thank you screen always shows
+    } catch {
+        // silent
+    }
 }
 
 /* ══════════════════════════════════
