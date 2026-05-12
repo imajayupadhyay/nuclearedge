@@ -85,8 +85,8 @@
         <transition name="expand">
             <div v-if="depth === 0 && isExpanded" class="pl-8 pr-4 pb-4">
                 <draggable
-                    :model-value="item.children || []"
-                    @update:model-value="updateChildren"
+                    :list="item.children"
+                    @change="notifyChildrenChanged"
                     :group="{ name: 'menu', pull: true, put: true }"
                     item-key="id"
                     handle=".drag-handle"
@@ -102,9 +102,6 @@
                         />
                     </template>
                 </draggable>
-                <p v-if="!item.children || item.children.length === 0" class="text-sm text-slate-400 text-center py-2">
-                    Drag items here to create dropdown
-                </p>
             </div>
         </transition>
     </div>
@@ -126,10 +123,10 @@ const emit = defineEmits(['edit', 'delete', 'update-children']);
 
 const isExpanded = ref(true);
 
-const updateChildren = (newChildren) => {
+const notifyChildrenChanged = () => {
     emit('update-children', {
         parentId: props.item.id,
-        children: newChildren,
+        children: [...(props.item.children || [])],
     });
 };
 </script>

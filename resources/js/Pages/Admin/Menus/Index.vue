@@ -161,7 +161,7 @@
         <!-- Menu Tree Container -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <draggable
-                v-model="localMenuItems"
+                :list="localMenuItems"
                 :group="{ name: 'menu', pull: true, put: true }"
                 item-key="id"
                 handle=".drag-handle"
@@ -391,6 +391,7 @@ const props = defineProps({
 const localMenuItems = ref(JSON.parse(JSON.stringify(props.menuItems || [])));
 const originalOrder = ref(JSON.stringify(props.menuItems || []));
 const hasChanges = computed(() => JSON.stringify(localMenuItems.value) !== originalOrder.value);
+const autoSaveTimer = ref(null);
 
 // Modal state
 const showAddModal = ref(false);
@@ -422,7 +423,7 @@ const flattenTree = (items, parentId = null) => {
 
 // Handle drag changes
 const handleDragChange = () => {
-    // Changes are tracked reactively through v-model
+    queueAutoSave();
 };
 
 // Update children order (called from child component)
@@ -430,6 +431,7 @@ const updateChildren = ({ parentId, children }) => {
     const parent = findItem(localMenuItems.value, parentId);
     if (parent) {
         parent.children = children;
+        queueAutoSave();
     }
 };
 
@@ -446,18 +448,34 @@ const findItem = (items, id) => {
 };
 
 // Save reordered structure
-const saveOrder = async () => {
+const saveOrder = async ({ reload = false, silent = false } = {}) => {
     isSaving.value = true;
     try {
         const flatItems = flattenTree(localMenuItems.value);
         await axios.post('/admin/menus/reorder', { items: flatItems });
         originalOrder.value = JSON.stringify(localMenuItems.value);
-        router.reload({ only: ['menuItems'] });
+        if (reload) {
+            router.reload({ only: ['menuItems'] });
+        }
     } catch (error) {
-        alert('Failed to save order. Please try again.');
+        if (!silent) {
+            alert('Failed to save order. Please try again.');
+        }
     } finally {
         isSaving.value = false;
     }
+};
+
+const queueAutoSave = () => {
+    if (autoSaveTimer.value) {
+        clearTimeout(autoSaveTimer.value);
+    }
+
+    autoSaveTimer.value = setTimeout(() => {
+        if (hasChanges.value && !isSaving.value) {
+            saveOrder({ silent: true });
+        }
+    }, 300);
 };
 
 // Modal handlers

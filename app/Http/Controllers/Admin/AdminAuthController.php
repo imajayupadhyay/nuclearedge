@@ -9,8 +9,19 @@ use Inertia\Inertia;
 
 class AdminAuthController extends Controller
 {
-    public function showLogin()
+    public function showLogin(Request $request)
     {
+        if (Auth::check()) {
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            // Ensure non-admin authenticated sessions can't block admin login.
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
+
         return Inertia::render('Admin/Login');
     }
 

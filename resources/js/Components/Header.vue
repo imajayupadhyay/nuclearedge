@@ -300,7 +300,7 @@
                     <ul class="space-y-2">
                         <li v-for="item in menuItems" :key="item.id">
                             <!-- Parent item with dropdown -->
-                            <template v-if="item.active_children && item.active_children.length > 0">
+                            <template v-if="getItemChildren(item).length > 0">
                                 <button
                                     @click="toggleDropdown(item.id)"
                                     class="w-full group flex items-center justify-between gap-4 px-4 py-4 text-lg font-semibold text-white hover:bg-gradient-to-r hover:from-orange-500 hover:to-red-500 rounded-xl transition-all duration-300"
@@ -322,7 +322,7 @@
                                 <!-- Dropdown children -->
                                 <transition name="dropdown-menu">
                                     <ul v-if="openDropdowns.includes(item.id)" class="ml-6 mt-2 space-y-1">
-                                        <li v-for="child in item.active_children" :key="child.id">
+                                        <li v-for="child in getItemChildren(item)" :key="child.id">
                                             <component
                                                 :is="isExternalLink(child.url) ? 'a' : Link"
                                                 :href="child.url"
@@ -456,6 +456,10 @@ const openDropdowns = ref([]);
 
 // Dynamic social links
 const socialLinks = computed(() => page.props.socialLinks || []);
+
+const getItemChildren = (item) => {
+    return item?.active_children || item?.children || [];
+};
 
 const toggleDropdown = (id) => {
     const index = openDropdowns.value.indexOf(id);
