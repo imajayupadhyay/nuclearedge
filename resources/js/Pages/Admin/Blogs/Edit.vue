@@ -85,8 +85,9 @@
                         </div>
                         <div class="mb-6">
                             <label for="published_at" class="block text-sm font-medium text-slate-700 mb-2">Publish Date</label>
-                            <input id="published_at" v-model="form.published_at" type="datetime-local" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" :class="form.errors.published_at ? 'border-red-500' : 'border-slate-300'"/>
+                            <input id="published_at" v-model="form.published_at" type="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" :class="form.errors.published_at ? 'border-red-500' : 'border-slate-300'"/>
                             <p v-if="form.errors.published_at" class="mt-1 text-sm text-red-600">{{ form.errors.published_at }}</p>
+                            <p class="mt-1 text-xs text-slate-500">Date only (IST). Today or past date publishes immediately.</p>
                         </div>
                         <div>
                             <label class="flex items-center">
@@ -178,7 +179,7 @@ const form = useForm({
     status: props.blog.status,
     is_featured: props.blog.is_featured,
     categories: props.blog.categories.map(c => c.id),
-    published_at: props.blog.published_at ? new Date(props.blog.published_at).toISOString().slice(0, 16) : '',
+    published_at: props.blog.published_date || '',
     meta_title: props.blog.meta_title,
     meta_description: props.blog.meta_description,
     meta_keywords: props.blog.meta_keywords,
@@ -199,5 +200,17 @@ const handleImageUpload = (event) => {
 };
 
 const removeNewImage = () => { form.featured_image = null; imagePreview.value = null; };
-const submit = () => { form.post(`/admin/blogs/${props.blog.id}`, { forceFormData: true, _method: 'PUT' }); };
+const submit = () => {
+    form
+        .transform((data) => ({
+            ...data,
+            _method: 'PUT',
+        }))
+        .post(`/admin/blogs/${props.blog.id}`, {
+            forceFormData: true,
+            onFinish: () => {
+                form.transform((data) => data);
+            },
+        });
+};
 </script>

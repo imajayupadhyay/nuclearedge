@@ -179,12 +179,12 @@
                             <input
                                 id="published_at"
                                 v-model="form.published_at"
-                                type="datetime-local"
+                                type="date"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 :class="form.errors.published_at ? 'border-red-500' : 'border-slate-300'"
                             />
                             <p v-if="form.errors.published_at" class="mt-1 text-sm text-red-600">{{ form.errors.published_at }}</p>
-                            <p class="mt-1 text-xs text-slate-500">Leave empty for immediate publish</p>
+                            <p class="mt-1 text-xs text-slate-500">Date only (IST). Today or past date publishes immediately.</p>
                         </div>
 
                         <!-- Is Featured -->

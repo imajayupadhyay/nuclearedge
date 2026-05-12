@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\BlogPageSetting;
 use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -107,7 +108,7 @@ class BlogController extends Controller
             'is_featured' => 'nullable|boolean',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
-            'published_at' => 'nullable|date',
+            'published_at' => 'nullable|date_format:Y-m-d',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
@@ -127,10 +128,7 @@ class BlogController extends Controller
         $validated['user_id'] = auth()->id();
         $validated['is_featured'] = $validated['is_featured'] ?? false;
         $validated['read_time'] = $validated['read_time'] ?? $this->calculateReadTime($validated['content']);
-
-        if ($validated['status'] === 'published' && empty($validated['published_at'])) {
-            $validated['published_at'] = now();
-        }
+        $validated['published_at'] = $this->resolvePublishedAt($validated['published_at'] ?? null, $validated['status']);
 
         $categories = $validated['categories'] ?? [];
         unset($validated['categories']);
@@ -148,6 +146,7 @@ class BlogController extends Controller
     public function edit(Blog $blog)
     {
         $categories = Category::active()->ordered()->get();
+        $blog->published_date = $blog->published_at?->copy()->setTimezone('Asia/Kolkata')->format('Y-m-d');
 
         return Inertia::render('Admin/Blogs/Edit', [
             'blog' => $blog->load(['user', 'categories']),
@@ -169,7 +168,7 @@ class BlogController extends Controller
             'is_featured' => 'nullable|boolean',
             'categories' => 'nullable|array',
             'categories.*' => 'exists:categories,id',
-            'published_at' => 'nullable|date',
+            'published_at' => 'nullable|date_format:Y-m-d',
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string',
             'meta_keywords' => 'nullable|string',
@@ -196,10 +195,11 @@ class BlogController extends Controller
 
         $validated['is_featured'] = $validated['is_featured'] ?? false;
         $validated['read_time'] = $validated['read_time'] ?? $this->calculateReadTime($validated['content']);
-
-        if ($validated['status'] === 'published' && $blog->status === 'draft' && empty($validated['published_at'])) {
-            $validated['published_at'] = now();
-        }
+        $validated['published_at'] = $this->resolvePublishedAt(
+            $validated['published_at'] ?? null,
+            $validated['status'],
+            $blog->published_at
+        );
 
         $categories = $validated['categories'] ?? [];
         unset($validated['categories']);
@@ -230,5 +230,26 @@ class BlogController extends Controller
         $wordCount = str_word_count(strip_tags($content));
         $minutes = ceil($wordCount / 200);
         return max(1, $minutes);
+    }
+
+    private function resolvePublishedAt(?string $publishedDate, string $status, $existingPublishedAt = null): ?Carbon
+    {
+        if ($status !== 'published') {
+            return null;
+        }
+
+        $nowIst = Carbon::now('Asia/Kolkata');
+
+        if (empty($publishedDate)) {
+            return $existingPublishedAt ? Carbon::parse($existingPublishedAt) : $nowIst;
+        }
+
+        $selectedDateIst = Carbon::createFromFormat('Y-m-d', $publishedDate, 'Asia/Kolkata')->startOfDay();
+
+        if ($selectedDateIst->lessThanOrEqualTo($nowIst->copy()->startOfDay())) {
+            return $nowIst;
+        }
+
+        return $selectedDateIst;
     }
 }

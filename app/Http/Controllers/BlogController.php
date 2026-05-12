@@ -100,9 +100,12 @@ class BlogController extends Controller
             $blog = $query->published()->firstOrFail();
         }
 
-        // Verify category matches
-        $hasCategory = $blog->categories->contains('slug', $categorySlug);
-        if (!$hasCategory) {
+        // Verify category matches. Allow uncategorized fallback when no category is assigned.
+        if ($blog->categories->isEmpty()) {
+            if ($categorySlug !== 'uncategorized') {
+                abort(404);
+            }
+        } elseif (!$blog->categories->contains('slug', $categorySlug)) {
             abort(404);
         }
 

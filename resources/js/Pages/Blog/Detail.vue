@@ -1,9 +1,9 @@
 <template>
     <div class="min-h-screen bg-white">
         <Head>
-            <title>{{ blog.title }} - Nuclear Edge Blog</title>
-            <meta name="description" :content="blog.excerpt" />
-            <meta name="keywords" :content="`${blog.category}, ${blog.title}, Nuclear Edge, business insights, technology trends, ${blog.category.toLowerCase()} articles, business transformation`" />
+            <title>{{ seoTitle }}</title>
+            <meta name="description" :content="seoDescription" />
+            <meta name="keywords" :content="seoKeywords" />
             <meta name="author" :content="blog.author" />
             <meta name="robots" content="index, follow" />
             <meta name="article:published_time" :content="blog.date" />
@@ -14,8 +14,8 @@
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="article" />
             <meta property="og:url" :content="canonicalUrl" />
-            <meta property="og:title" :content="blog.title" />
-            <meta property="og:description" :content="blog.excerpt" />
+            <meta property="og:title" :content="seoTitle" />
+            <meta property="og:description" :content="seoDescription" />
             <meta property="og:image" :content="blog.image" />
             <meta property="og:site_name" content="Nuclear Edge" />
             <meta property="article:published_time" :content="blog.date" />
@@ -25,8 +25,8 @@
             <!-- Twitter -->
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:url" :content="canonicalUrl" />
-            <meta name="twitter:title" :content="blog.title" />
-            <meta name="twitter:description" :content="blog.excerpt" />
+            <meta name="twitter:title" :content="seoTitle" />
+            <meta name="twitter:description" :content="seoDescription" />
             <meta name="twitter:image" :content="blog.image" />
             <meta name="twitter:creator" :content="`@${blog.author.replace(' ', '')}`" />
             <meta name="twitter:label1" content="Written by" />
@@ -399,6 +399,23 @@ const activeHeading = ref('');
 const canonicalUrl = computed(() => {
     const categorySlug = props.blog.categorySlug || props.blog.category.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     return `https://nuclearedge.com/${categorySlug}/${props.blog.slug}`;
+});
+
+const seoTitle = computed(() => {
+    const baseTitle = props.blog.metaTitle || props.blog.title;
+    return baseTitle.includes('Nuclear Edge') ? baseTitle : `${baseTitle} - Nuclear Edge Blog`;
+});
+
+const seoDescription = computed(() => props.blog.metaDescription || props.blog.excerpt || '');
+
+const seoKeywords = computed(() => {
+    const customKeywords = props.blog.metaKeywords;
+
+    if (customKeywords && customKeywords.trim() !== '') {
+        return customKeywords;
+    }
+
+    return `${props.blog.category}, ${props.blog.title}, Nuclear Edge, business insights, technology trends, ${props.blog.category.toLowerCase()} articles, business transformation`;
 });
 
 // Extract headings from blog content

@@ -474,8 +474,8 @@ const formatDate = (dateString) => {
 const getBlogPreviewUrl = (blog) => {
     const categorySlug = blog.categories.length > 0 ? blog.categories[0].slug : 'uncategorized';
     const baseUrl = `/${categorySlug}/${blog.slug}`;
-    // Add preview parameter for draft blogs
-    return blog.status === 'draft' ? `${baseUrl}?preview=true` : baseUrl;
+    // Always use preview mode from admin so recently published/scheduled posts are viewable.
+    return `${baseUrl}?preview=true`;
 };
 
 const deleteBlog = (blog) => {
