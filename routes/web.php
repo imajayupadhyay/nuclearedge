@@ -17,6 +17,10 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/blog', [BlogController::class, 'index']);
 
+Route::get('/clients', function () {
+    return Inertia::render('Clients/Index');
+})->name('clients');
+
 Route::get('/about', function () {
     return Inertia::render('About/Index', [
         'pageData' => AboutPageSetting::getAboutPageData(),

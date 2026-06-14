@@ -120,7 +120,7 @@ const defaults = {
     primaryButtonText: 'Discover Our Story',
     primaryButtonLink: '/about',
     secondaryButtonText: 'Explore Services',
-    secondaryButtonLink: '#services'
+    secondaryButtonLink: '/clients'
 };
 
 // Computed properties with fallback to defaults
