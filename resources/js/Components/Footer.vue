@@ -212,17 +212,29 @@
                 </div>
 
                 <!-- Bottom Section: Copyright -->
-                <div class="text-center">
-                    <p class="text-slate-500 text-sm">
-                        Copyright © {{ currentYear }}
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 font-semibold">
-                            {{ footerData.copyright_text || 'NuclearEdge' }}
-                        </span>
-                        . All Rights Reserved.
-                    </p>
-                    <p class="text-slate-600 text-xs mt-2">
-                        {{ footerData.copyright_tagline || 'Built with nuclear precision and innovative excellence' }}
-                    </p>
+                <div class="relative">
+                    <!-- Sitemap link: bottom left, small font -->
+                    <a
+                        href="/sitemap.xml"
+                        target="_blank"
+                        rel="noopener"
+                        class="absolute left-0 top-0 text-slate-600 hover:text-orange-500 text-xs transition-colors duration-300"
+                    >
+                        sitemap.xml
+                    </a>
+
+                    <div class="text-center">
+                        <p class="text-slate-500 text-sm">
+                            Copyright © {{ currentYear }}
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500 font-semibold">
+                                {{ footerData.copyright_text || 'NuclearEdge' }}
+                            </span>
+                            . All Rights Reserved.
+                        </p>
+                        <p class="text-slate-600 text-xs mt-2">
+                            {{ footerData.copyright_tagline || 'Built with nuclear precision and innovative excellence' }}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

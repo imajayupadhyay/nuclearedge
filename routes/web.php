@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TalkHealsController;
 use App\Models\AboutPageSetting;
 use App\Models\ContactPageSetting;
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index']);
+
+// Dynamic XML sitemap for SEO
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/blog', [BlogController::class, 'index']);
 
